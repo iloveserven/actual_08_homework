@@ -9,7 +9,7 @@ insert_index = ''
 
 while True:
     min_list = []
-    new_num = raw_input("Please input your num: ")
+    new_num = raw_input("Please input your num [must integer]，end of the space: ")
     if new_num == '':
         break
     int_num = int(new_num)
@@ -32,8 +32,8 @@ while True:
         for min_index in sort_list:
             if min_index <= int_num:
                 min_list.append(min_index)
-                min_num = max(min_list)
-                insert_index = sort_list.index(min_num)
+        min_num = max(min_list)
+        insert_index = sort_list.index(min_num)
         sort_list.insert(insert_index+1, int_num)
         print "The %d time(s) add. Add num is: %d" % (count, int_num)
         count += 1
