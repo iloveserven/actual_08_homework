@@ -1,14 +1,17 @@
 #! /usr/bin/env python
-#encoding=utf-8
+#encoding=utf8
 #
 sort_list = []
-min_list = []
+#min_list = []
+max_list = []
 count = 1
 min_num = ''
+max_num = ''
 insert_index = ''
 
 while True:
-    min_list = []
+    max_list = []
+    #min_list = []
     new_num = raw_input("Please input your num [must integer]，end of the space: ")
     if new_num == '':
         break
@@ -29,6 +32,17 @@ while True:
         count += 1
         print sort_list
     else:
+        for max_index in sort_list:
+            if max_index >= int_num:
+                max_list.append(max_index)
+        max_num = min(max_list)
+        insert_index = sort_list.index(max_num)
+        sort_list.insert(insert_index, int_num)
+        print "The %d time(s) add. Add num is: %d" % (count, int_num)
+        count += 1
+        print sort_list
+## 下面是第一次的部分代码，有问题，引以为戒……
+'''
         for min_index in sort_list:
             if min_index <= int_num:
                 min_list.append(min_index)
@@ -38,3 +52,4 @@ while True:
         print "The %d time(s) add. Add num is: %d" % (count, int_num)
         count += 1
         print sort_list
+'''
