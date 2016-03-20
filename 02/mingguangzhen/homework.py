@@ -4,6 +4,7 @@
 sort_list = [3,1,4,5,10,2]
 #sort_list = []
 #min_list = []
+#
 max_list = []
 count = 1
 min_num = ''
