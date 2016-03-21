@@ -19,6 +19,7 @@ for itm,cot in dic.items():
         r_dic[cot] = itm
 
 arr = r_dic.keys()
+print arr
 while True:
     max_index = 0
     for i in range(len(arr)):
