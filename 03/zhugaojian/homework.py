@@ -29,5 +29,15 @@ for n in range(10,len(v_arr)):
 res_dict = {}
 for k,v in count_dict.items():
     if v in v_arr[:index_top_10]:
-        res_dict[k] = v
-print res_dict
+        if v in res_dict:
+            res_dict[v] = res_dict[v]+','+k
+        else:
+            res_dict[v] = k
+#print res_dict
+n = 1
+tmp = 0
+for i in range(index_top_10):
+    if tmp != v_arr[i]:
+        tmp = v_arr[i]
+        print "NO.%s is '%s', occur %s times" %(i+1,res_dict.get(v_arr[i]),v_arr[i])
+    n+=1
