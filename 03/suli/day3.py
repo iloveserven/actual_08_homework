@@ -32,6 +32,7 @@ def sort_note_sub(note_count):
 	for i in range(n):
 		for j in range(1, n-i):
 			if sort_note_v[j] > sort_note_v[j-1]:
+				# 同时排序key 和 values 的 list
 				sort_note_k[j-1], sort_note_k[j] = sort_note_k[j], sort_note_k[j-1]
 				sort_note_v[j-1], sort_note_v[j] = sort_note_v[j], sort_note_v[j-1]
 
