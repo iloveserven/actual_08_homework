@@ -16,7 +16,10 @@ for key,val in res.items():
 arr = new_res.keys()
 count = 0
 while count<10:
+	# 取出一个最大值，把最大值对应的字符打出来
 	max_num = max(arr)
 	print "第%s名是字符 %s 出现了 %s次 " % (count+1,','.join(new_res[max_num]),max_num)
+	# 并列也要算进出现次数
 	count = count + len(new_res[max_num])
+	#删除最大值 循环继续
 	arr.remove(max_num)

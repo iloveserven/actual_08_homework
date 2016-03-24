@@ -24,7 +24,4 @@ for i in range(len(res_list)-1):
 		if i>10:
 			break
 	print '第%s名是字符 %s 出现了 %s次 '%(i+1-count,now_max[0],now_max[1])
-# print count
 # print res_list
-
-# print [(k,v) for k,v in res.items()]
