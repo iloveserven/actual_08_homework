@@ -17,6 +17,6 @@ arr = new_res.keys()
 count = 0
 while count<10:
 	max_num = max(arr)
-	print "The NO.%d character is '%s',and the number is %d" % (count+1,','.join(new_res[max_num]),max_num)
+	print "第%s名是字符 %s 出现了 %s次 " % (count+1,','.join(new_res[max_num]),max_num)
 	count = count + len(new_res[max_num])
 	arr.remove(max_num)
