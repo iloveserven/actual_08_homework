@@ -4,10 +4,7 @@ read_me = '''first of all, i want make it clear that i can not claim undellllllr
 # 循环文本，将每个字符出现的次数统计至字典中
 new_dict = {}
 for _str in read_me:
-    if new_dict.has_key(_str):
-        new_dict[_str] += 1
-    else:
-        new_dict[_str] = 1
+    new_dict[_str] = new_dict.get(_str, 0) + 1
 reverse_dict = {}
 # 统计字符数量，存入reverse_dict中
 for _key, _val in new_dict.items():
