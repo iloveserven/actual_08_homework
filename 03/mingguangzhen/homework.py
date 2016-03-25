@@ -23,7 +23,7 @@ for x in range(1, length):
 # 反转统计好的列表保留前十个最大的元素，添加重复的元素
 count_list_reverse = count_list[-1:-11:-1]
 num = count_list[-10]
-for i in count_list[-11:]:
+for i in count_list[-11::-1]:
     if i[1] == count_list[-10][1]:
         count_list_reverse.append(i)
 for tup in count_list_reverse:
