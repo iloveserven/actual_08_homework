@@ -30,6 +30,8 @@ for i in range(1,len(strList)):
 #取出strList中的最后10个元素，即Top10
 print strList
 print "-"*60,"Top 10","-"*60
+count = 0
 for i in range(len(strList)-1,len(strList)-11,-1):
-    print strList[i][0],strList[i][1]
+    print "第%d名的字符是：%s,出现次数是：%d" %(count+1,strList[i][0],strList[i][1])
+
 
