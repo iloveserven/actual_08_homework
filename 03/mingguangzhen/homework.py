@@ -20,12 +20,11 @@ for x in range(1, length):
         count_list.insert(mid, count_list.pop(x))
     else:
         count_list.insert(start, count_list.pop(x))
-# 反转统计好的列表保留前十个最大的元素
+# 反转统计好的列表保留前十个最大的元素，添加重复的元素
 count_list_reverse = count_list[-1:-11:-1]
-# 遍历统计好的列表查看是否存在并列元素
-for i in count_list:
-    # 避免重复添加第十个元素
-    if (i[1] == count_list_reverse[-1][1]) and (i not in count_list_reverse):
+num = count_list[-10]
+for i in count_list[-11:]:
+    if i[1] == count_list[-10][1]:
         count_list_reverse.append(i)
 for tup in count_list_reverse:
-    print "%s ---> %d" % (tup[0], tup[1])
+    print "'%s' ---> %d" % (tup[0], tup[1])
