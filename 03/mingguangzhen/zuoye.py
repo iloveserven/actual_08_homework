@@ -6,33 +6,14 @@ new_dict = {}
 for _str in read_me:
     new_dict[_str] = new_dict.get(_str, 0) + 1
 reverse_dict = {}
-# 统计字符数量，存入reverse_dict中
+# 反转new_dict
 for _key, _val in new_dict.items():
-    if reverse_dict.has_key(_val):
-        if isinstance(reverse_dict[_val], list):
-            reverse_dict[_val].append(_key)
-        else:
-            reverse_dict[_val] = [reverse_dict[_val], _key]
-    else:
-        reverse_dict[_val] = _key
-# 取出所有字符出现的数量存入列表，并降序
+    reverse_dict.setdefault(_val, [])
+    reverse_dict[_val].append(_key)
 key_list = reverse_dict.keys()
-key_list.sort()
-key_list.reverse()
-# 循环列表取出字典中对应的值
-cout = 0
-for num in key_list:
-    # 判断字典中的值是否为列表
-    if isinstance(reverse_dict[num], list):
-        # 循环列表中的值打印出来，计算前十cout
-        cout_tem = cout + 1
-        for tem in reverse_dict[num]:
-            cout += 1
-            print "NO.%d:'%s' ---> %d times" % (cout_tem, tem, num)
-        if cout >= 10:
-            break
-    else:
-        cout += 1
-        print "NO.%d:'%s' ---> %d times" % (cout, reverse_dict[num], num)
-        if cout >= 10:
-            break
+count = 0
+while count < 10:
+    max_key = max(key_list)
+    print "第%d名是字符'%s'出现了%d次" % (count+1, ','.join(reverse_dict[max_key]), max_key)
+    count += len(reverse_dict[max_key])
+    key_list.remove(max_key)
