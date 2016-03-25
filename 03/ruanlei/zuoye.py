@@ -10,10 +10,17 @@ for s in read_me:
         res_dict[s] = 1
 #将res_dict转换成list表
 items=res_dict.items()
-#将key跟value值对调后，以key值排序
-backitems=[[v[1],v[0]] for v in items]
-backitems.sort()
-#将list中的值反转，打印出前10个
-backitems.reverse()
-for key,value in backitems[0:10]:
-    print value,key
+#取出value值，用冒泡排序进行排序
+lenth=len(items)
+for i in range(lenth-1):
+     for j in range(lenth-1-i):
+         if items[j][1]>items[j+1][1]:
+             items[j],items[j+1]=items[j+1],items[j]
+#反转items列表
+items.reverse()
+#取出前10个值
+new_items=items[0:10]
+length2=len(new_items)
+#用格式化打印出值
+for i in range(10):
+    print '第%s名的是字附%s,出现了%s次，'%(i+1,new_items[i][0],new_items[i][1])
