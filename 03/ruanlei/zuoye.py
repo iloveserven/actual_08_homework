@@ -23,4 +23,4 @@ new_items=items[0:10]
 length2=len(new_items)
 #用格式化打印出值
 for i in range(10):
-    print '第%s名的是字附%s,出现了%s次，'%(i+1,new_items[i][0],new_items[i][1])
+    print '第 %s名的是字附%s,出现了%s次，'%(i+1,new_items[i][0],new_items[i][1])

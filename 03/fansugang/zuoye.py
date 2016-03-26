@@ -27,3 +27,5 @@ for st in read_me:
 		dic[st] = 1
 dic = sorted(dic.iteritems(), key=lambda d:d[1], reverse = True)
 print dic[0:10]
+
+# 没考虑并列

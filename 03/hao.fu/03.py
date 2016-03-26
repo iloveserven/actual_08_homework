@@ -8,11 +8,11 @@ list_str = list(read_me)
 dict_str = {}
 
 # 字符串转换数组
-for linshi in list_str:
-    if linshi in dict_str:
-        dict_str[linshi] = dict_str[linshi] + 1
+for tmp in list_str:
+    if tmp in dict_str:
+        dict_str[tmp] = dict_str[tmp] + 1
     else:
-        dict_str[linshi] = 1
+        dict_str[tmp] = 1
 list_number = list(dict_str.values())
 # top10
 values_count = len(list_number)
@@ -23,11 +23,11 @@ for i in range(1, 11):
                 j - 1], list_number[j] = list_number[j], list_number[j - 1]
 # 打印结果
 result_dict = {}
-linshi_up = ''
+tmp_up = ''
 for i in range(1, 11):
-    linshi = list_number[len(list_number) - i]
+    tmp = list_number[len(list_number) - i]
     for top_char in dict_str:
-        if dict_str[top_char] == linshi:
-            if linshi != linshi_up:
-                print('char is %s ,number is %d' % (top_char, linshi))
-    linshi_up = linshi
+        if dict_str[top_char] == tmp:
+            if tmp != tmp_up:
+                print('char is %s ,number is %d' % (top_char, tmp))
+    tmp_up = tmp

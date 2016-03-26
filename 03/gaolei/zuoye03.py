@@ -9,14 +9,13 @@ for i in read_me:
         dic[i] = 1
     else:
         dic[i] += 1
+
+
 for itm,cot in dic.items():
     if cot in r_dic:
-        if isinstance(r_dic[cot],list):
-            r_dic[cot].append(itm)
-        else:
-            r_dic[cot] = [r_dic[cot],itm]
+        r_dic[cot].append(itm)
     else:
-        r_dic[cot] = itm
+        r_dic[cot] = [itm]
 
 arr = r_dic.keys()
 print arr
@@ -30,5 +29,5 @@ while True:
     del arr[max_index]
     if times >= 10: #计算上一次打印后的字符有没有超过10，没有就打印下一个。
         break
-   
+
 

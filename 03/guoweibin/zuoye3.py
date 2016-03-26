@@ -4,7 +4,7 @@ read_me = '''first of all, i want make it clear that i can not claim undellllllr
 dict_read={}
 for key in read_me:
     dict_read[key]=dict_read.get(key,0)+1
-print dict_read
+# print dict_read
 
 #对字典的key和value进行反转，形成新的字典new_dict
 new_dict={}
@@ -17,13 +17,13 @@ for key,val in dict_read.items():
         else:
             list_value=new_dict[val]
             list_value.append(key)
-print new_dict
+# print new_dict
 
 #将形成的字典new_dict转成list
 list_read=[]
 for key in new_dict:
     list_read.append([key,new_dict[key]])
-print list_read
+# print list_read
 
 #对形成的list进行排序
 for i in range(len(list_read)):
@@ -32,12 +32,12 @@ for i in range(len(list_read)):
             list_read[j],list_read[j-1]=list_read[j-1],list_read[j]
         else:
             break
-print list_read
+# print list_read
 
 #输出最大的十个字符
 length=len(list_read)
 for i in range(length-1,length-11,-1):
-    print "出现第",length-i,"多的字符为：",list_read[i][1],"出现：",list_read[i][0],' 次'
+    print "出现第" , length-i,"多的字符为：" , list_read[i][1], "出现：" , list_read[i][0], ' 次'
 
 
 #########################################################################
