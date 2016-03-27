@@ -4,7 +4,7 @@
 with open('www_access_20140823.log', 'r+') as log_file:
     count_list = []
     for line in log_file.readlines():
-        temp = line.split(' \\')[0].split()
+        temp = line.split()
         count_list.append((temp[0],temp[6],temp[8],))
 # 定义写入文件模型
 res_str = '''<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
