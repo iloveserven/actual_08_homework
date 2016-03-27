@@ -19,37 +19,16 @@ for key,val in dict_read.items():
             list_value.append(key)
 print new_dict
 
-#将形成的字典new_dict转成list
-list_read=[]
-for key in new_dict:
-    list_read.append([key,new_dict[key]])
-print list_read
-
-#对形成的list进行排序
-for i in range(len(list_read)):
-    for j in range(1,i+1)[::-1]:
-        if list_read[j][0]<list_read[j-1][0]:
-            list_read[j],list_read[j-1]=list_read[j-1],list_read[j]
-        else:
-            break
-print list_read
-
-#输出最大的十个字符
-length=len(list_read)
-for i in range(length-1,length-11,-1):
-    print "出现第",length-i,"多的字符为：",list_read[i][1],"出现：",list_read[i][0],' 次'
+##输出前十的元素
+count=1
+key_arr=new_dict.keys()
+while count<11:
+    max_count=max(key_arr)
+    print "第 %s名，字符为：%s, 出现次数为：%s"%(count,new_dict[max_count],max_count)
+    key_arr.remove(max_count)
+    count=count+len(new_dict[max_count])
 
 
-#########################################################################
-# 字典反转后的，另一种方法解决方法：
-#对新字典按照key值排序,形成list
-list_read=new_dict.items()
-#对list使用sort函数排序
-list_read.sort()
-length=len(list_read)
-#打印输出出现次数最多的10个字符
-for i in range(length-1,length-11,-1):
-    print "出现第",length-i,"多的字符为：",list_read[i][1],"出现：",list_read[i][0],' 次'
 
 
 
