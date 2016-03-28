@@ -45,3 +45,4 @@ while True:
     new_list.remove(_max)
 _file = open('log.html','w')
 _file.write(_html)
+_file.close()
