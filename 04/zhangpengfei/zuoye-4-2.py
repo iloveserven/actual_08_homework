@@ -33,15 +33,14 @@ _html = _html + _str%('排名','IP','url','状态','次数')
 
 
 new_list = new_dict2.keys()
-next_count = 1
+count = 1
 while True:
-    count = next_count
     if count > 10:
         break
     _max = max(new_list)
-    next_count = count + len(new_dict2[_max])
     for line in new_dict2[_max]:
         _html += _str%(count,line[0],line[1],line[2],_max)
+    count = count + len(new_dict2[_max])
     new_list.remove(_max)
 _file = open('log.html','w')
 _file.write(_html)
