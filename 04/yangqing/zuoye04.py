@@ -46,4 +46,5 @@ while count <11:
 f = open('web.html','w+')
 for i in res:
     f.writelines(i)
+f.writelines("</table>")
 f.close()
