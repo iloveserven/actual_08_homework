@@ -27,9 +27,12 @@ for i in range(len(new_list)-1):
             new_list[j],new_list[j+1] = new_list[j+1],new_list[j]
 
 print new_list
-for i in range(10,0,-1):
+a = len(new_list)
+
+for i in range(a-1,a-10,-1):
     if type([]) == type(new_dict[new_list[i]]):
         for j in range(len(new_dict[new_list[i]])):
-            print new_dict[new_list[i]][j]
+            print i,new_dict[new_list[i]][j]
+            print "xxx"
         i = i - len(new_dict[new_list[i]])
-    print new_dict[new_list[i]]
+    print  i,new_dict[new_list[i]]

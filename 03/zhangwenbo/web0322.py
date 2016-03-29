@@ -5,11 +5,18 @@ read_me = '''first of all, i want make it clear that i can not claim undellllllr
 read_dict = {}
 for s in read_me:
 	read_dict[s] = read_dict.get(s,0)+1
-
+#统计字符
 list_new = read_dict.items()
 list_new_d =sorted(list_new,key=lambda x:x[1],reverse=True)[:10]
-for i in list_new_d:
-	print list_new_d.index(i)+1 , i
-
-
+#排序取前十
+count = 0
+for i in range(len(list_new_d)-1):
+	if list_new_d[i][1] == list_new_d[i-1][1]:
+		count = count +1
+	else:
+		count = 0
+		if i > 10:#满足值相等且循环十次就break，不在往下执行
+			break
+	print "%s  character: '%s' , count: %s" % (i+1-count,list_new_d[i][0],list_new_d[i][1])
+#打印前十，按照统计次数排序，并列排名打印出来
 
