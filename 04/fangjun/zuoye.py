@@ -44,5 +44,5 @@ while count < 10:
     
 tmp += "</table>"
 #print tmp
-with open('/www/html/uri.html','w') as f:
+with open('uri.html','w') as f:
     f.write(tmp)
