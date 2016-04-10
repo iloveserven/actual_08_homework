@@ -1,6 +1,6 @@
 #!/usr/bin/python
 def app(str):
-#å°†è·å–çš„stræ‹†åˆ†æˆä¸¤ä¸ªlistï¼Œä¸€ä¸ªå­˜æ”¾æ•°å€¼ï¼Œå¦ä¸€ä¸ªå­˜æ”¾è¿ç®—ç¬¦
+#½«»ñÈ¡µÄstr²ğ·Ö³ÉÁ½¸ölist£¬Ò»¸ö´æ·ÅÊıÖµ£¬ÁíÒ»¸ö´æ·ÅÔËËã·û
         tmp_lst = list(str)
         num_lst = []
         num_str = ''
@@ -13,7 +13,7 @@ def app(str):
                         code_lst.append(i)
                         num_str = ''
         num_lst.append(num_str)
-#éå†å¤„ç†ä¸¤ä¸ªlistï¼Œè®¡ç®—ç»“æœ
+#±éÀú´¦ÀíÁ½¸ölist£¬¼ÆËã½á¹û
         res = int(num_lst[0])
         for i in range(len(code_lst)):
                 if code_lst[i] == '+':
