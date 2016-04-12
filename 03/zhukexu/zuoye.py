@@ -16,3 +16,4 @@ for p in range(len(list_dict)):
 list_dict.reverse()
 for m in list_dict[0:10]:
     print '字符 %s 次数 %s' % (m[0],m[1])
+# 没考虑并列

@@ -18,6 +18,7 @@ for key,value  in d.items():
 			arr.append(key)
 	else:
 		new_d[value] = key
+print new_d
 new_arr = new_d.keys()
 new_arr.sort()
 for i in new_arr[-10:]:

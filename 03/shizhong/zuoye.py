@@ -29,7 +29,6 @@ for j in range(length):
 判读最后一个值是否重复，重复就添加
 '''
 
-empty_list = []
 empty_list = arr[-1:-11:-1]
 for i in arr:
 	if empty_list[-1][1]==i[1]:

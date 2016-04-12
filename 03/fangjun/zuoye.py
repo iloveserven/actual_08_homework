@@ -8,7 +8,7 @@ str_dict = {}
 for s in read_me:
     str_dict[s] = str_dict.get(s,0) + 1     #将字符作为键，字符所出现的次数作为值存放字典str_dict中
 
-print str_dict
+# print str_dict
 
 new_dict = {}           #定义一个字典，用于存放出现次数Top10的字符
 vList = str_dict.values() #取出字典所有键的值，并存入vList这个列表中
@@ -18,9 +18,6 @@ for i in range(1,len(vList)):
     for j in range(i,0,-1):
         if vList[j] < vList[j-1]:
             vList[j],vList[j-1] = vList[j-1],vList[j]
-print 
-print vList
-print
 
 for i in range(len(vList)-1,len(vList)-11,-1):   #外循环：从后向前遍历列表vList十次,取出列表最后10个最大的值
     for k in str_dict:                           #内循环：遍历字典
@@ -30,3 +27,4 @@ for i in range(len(vList)-1,len(vList)-11,-1):   #外循环：从后向前遍历
                 break                            #若长度为10，则跳出内循环不再遍历字典    
 print '-'*20,"Top10:",'-'*20,'\n'
 print new_dict          #打印出现次数top10的字符及出现的次数
+# 没考虑并列

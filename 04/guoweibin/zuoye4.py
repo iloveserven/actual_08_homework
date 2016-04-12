@@ -55,17 +55,6 @@ f=open('zuoye4.html','w')
 f.write(res_str)
 f.close()
 
-# count=1
-# val_arr=log_dict.values()
-# print val_arr
-# str_list=[]
-# max_count=max(val_arr)
-# print max_count
-
-#     print '%s,字符是%s,出现了%s次'%(count,result_dict[max_count],max_count)
-#
-#     key_arr.remove(max_count)
-#     count=count+len(result_dict[max_count])
 
 
 

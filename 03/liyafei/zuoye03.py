@@ -7,19 +7,13 @@ new_dt={}
 valnum = []
 '''# 统计字符串并且添加到字典'''
 for i  in read_me:
-    if i in dt:
-        dt[i] = dt[i]+1    
-    else:
-        dt[i] = 1
+    dt[i] = dt.get(i,0)+1
 '''# 把key 和 valuse 反转，并且把相同valuse值的 key 存入list'''
 for key,val in dt.items():
     if val in new_dt:
-        if type(new_dt[val]) != type([]):       
-           new_dt[val]  = [new_dt[val],key]
-        else:
-           new_dt[val].append(key) 
+       new_dt[val].append(key) 
     else:
-        new_dt[val] = key 
+        new_dt[val] = [key] 
 '''# 排序 字典 key ,从小到大,并且存入list '''
 for k in new_dt.keys():
     if len(valnum) == 0:

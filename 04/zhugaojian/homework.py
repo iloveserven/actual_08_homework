@@ -30,9 +30,10 @@ count = 1
 while count<11:
     max_value = max(v_list)
     v_list.remove(max_value)
-    print count,max_value,reverse_dict[max_value]
+    #print count,max_value,reverse_dict[max_value]
     for i in range(len(reverse_dict[max_value])):
         html_str += tmp_str%(count,reverse_dict[max_value][i][0],reverse_dict[max_value][i][1],reverse_dict[max_value][i][2],max_value)
+        #print count,reverse_dict[max_value][i][0],reverse_dict[max_value][i][1],reverse_dict[max_value][i][2],max_value
     count += len(reverse_dict[max_value])
 html_str += '</table>'
 
