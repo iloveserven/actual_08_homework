@@ -20,8 +20,7 @@ def loginact():
 	if name == 'admin' and passwd == 'admin':
 		session['user'] = 'admin'
 		return redirect('/show')
-	else:
-		return redirect('/login')
+	return redirect('/login')
 
 @app.route('/logout')
 def logout():
@@ -31,7 +30,7 @@ def logout():
 @app.route('/show')
 def show():
 	if 'user' not in session:
-		return redirect('/show')
+		return redirect('/login')
 	user_lst = []
 	with open('user.txt','r') as f:
 		for line in f:
