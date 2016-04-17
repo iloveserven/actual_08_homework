@@ -49,7 +49,7 @@ def adduser():
 @app.route('/deluser',methods=['post'])
 def deluser():
     user = request.form.get('user')
-    if user.strip() != '':
+    if user:
         with open('pass.txt','r') as f:
             arr = f.readlines()
         with open('pass.txt','w') as file_:
@@ -60,8 +60,7 @@ def deluser():
                     continue
                 else:
                     file_.write(line)
-    return redirect('/data')
-
+        return redirect('/data')
     return "请选择删除的值!!"
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=80,debug=True)
