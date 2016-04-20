@@ -122,7 +122,7 @@ def login_action():
         session['user'] = 'admin'
         return render_template("/index.html", name=login_name)
     else:
-        return redirect("/index")
+        return render_template("/login.html", status="1")
 
 
 # -------------------------------------------------------------------------
