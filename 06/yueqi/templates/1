@@ -1,0 +1,14 @@
+<form action='add' method='post'>
+	用户名:<input type='text' name='user'>
+	密码:<input type='text' name='passwd'>
+	<input type='submit' value='提交'>
+	<input type='reset' value='reset'>
+</form>
+<table border='5'>
+{% for i in user_web_list %}
+<tr>
+<td>{{i[0]}}</td>
+<td>{{i[1]}}</td>
+</tr>
+{% endfor %}
+</table>
