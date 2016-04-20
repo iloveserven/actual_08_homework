@@ -1,0 +1,26 @@
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+
+<form action='https://www.baidu.com/s'>
+<input  name='wd' type='text' >
+<input type='submit' value='baidu'>
+</form>
+
+
+
+<form action='userdel'>
+<table class='table table-bordered table-striped'>
+    <tr colspan="2" style='background-color:#99bbbb;'>
+        <td>用户名</td>
+        <td>密码</td>
+        <td>选项</td>
+    </tr>
+    {% for i in userlist %}
+    <tr>
+        <td>{{i[0]}}</td>
+        <td>{{i[1]}}</td>
+        <td><input type="submit" name="{{i[0]}}" value="删除"></td>
+    </tr>
+    {% endfor %}
+</form>
+</table>

@@ -1,0 +1,47 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container">
+    <h3>
+        <form action='/adduser' method='post'>
+        username : <input type='text' name='user'>
+        password : <input type='password' name='passwd'>
+                   <input type='submit' value='add'>
+                   <a href='/loginout'> &nbsp退&nbsp出&nbsp</a>
+        </form>
+    <form action='/deluser' method='post'>
+               <input type='submit' value='del'>
+    </h3>
+<table class='table table-bordered table-striped'>
+            <tr colspan="2" style="background-color:#99bbbb;">
+                <td>选项</td>
+                <td>用户名</td>
+                <td>密码</td>
+            </tr>
+{% for user in userlist %}
+<tr>
+
+    <td><input type="radio" name="user" value="{{user[0]}}:{{user[1]}}"></td>
+    <td>{{user[0]}}</td>
+    <td>{{user[1]}}</td>
+</tr>
+{% endfor %}
+
+</form>
+</table>
+</div>
+
+
+
+
+<!--
+<table border='1'>
+{% for user in userlist %}
+<tr>
+    <td>{{user[0]}}</td>
+    <td>{{user[1]}}</td>
+</tr>
+
+{% endfor %}
+</table>
+-->
