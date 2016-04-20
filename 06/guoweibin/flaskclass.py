@@ -6,9 +6,7 @@ app.secret_key='112233'
 
 @app.route('/')
 def index():
-    ##render_template:渲染页面
-    # username={'reboot':12,'woniu':14}
-
+    
     return render_template('login.html')
 
 @app.route('/login')
@@ -34,7 +32,7 @@ def data():
     if 'user' not in session:
         return redirect('/login')
     userlist=[]
-    with open('D:/pythontest/testfile/user.txt') as f:
+    with open('user.txt') as f:
        for line in f:
            tmp=line.strip().split(':')
            if len(tmp)==2:
@@ -52,7 +50,7 @@ def adduser():
 
     if not user or not password:
         return redirect('/data')
-    with open('D:/pythontest/testfile/user.txt','a') as f:
+    with open('user.txt','a') as f:
         f.write('\n'+user+':'+password)
     return redirect('/data')
 
@@ -63,7 +61,7 @@ def deluser():
     username=request.args.get('username')
     print username
     user_list=[]
-    with open('D:/pythontest/testfile/user.txt') as f:
+    with open('user.txt') as f:
             for line in f:
                 if len(line.strip().split(':'))==2:
                     user_list.append(line.strip().split(':'))
@@ -71,7 +69,7 @@ def deluser():
         if _str[0]==username:
            user_list.remove(_str)
 
-    with open('D:/pythontest/testfile/user.txt','w') as _file:
+    with open('user.txt','w') as _file:
         for str in user_list:
             _file.write('\n'+str[0]+':'+str[1])
 
