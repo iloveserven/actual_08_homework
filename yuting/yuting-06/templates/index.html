@@ -1,0 +1,39 @@
+
+{% if username=='admin' %}
+<p>
+Hello {{username}}!
+</p>
+{% endif %}
+
+<table border="1">
+{% for user in userList %}
+<p>
+<tr><td>{{user[0]}}</td><td>{{user[0]}}</td></tr>
+</p>
+{% endfor %}
+</table>
+
+
+<button>
+    测试按钮
+</button>
+
+<form action="https://www.baidu.com/s">
+    <input name='wd' type="text">
+    <input type="submit" value="Baidu搜索">
+</form>
+
+<form action="/adduser" method="post">
+    username:<input name='username' type="text">
+    password:<input name='password' type="password">
+    <input name='id' value="110" type="hidden">
+    <input type="submit" value="addUser">
+    <input type="checkbox" value="复选框">
+</form>
+<input type="button" value="按钮">
+
+<form action="/data">
+    name:<input name='name' type="text" value="yt">
+    age:<input name='age' type="text" value="22">
+    <input type="submit" value="Reboot">
+</form>
