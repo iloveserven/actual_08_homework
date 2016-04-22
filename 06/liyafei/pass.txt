@@ -1,0 +1,3 @@
+reboot:reboot
+ada:ada
+xcc:xcc
