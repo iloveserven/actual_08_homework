@@ -1,18 +1,17 @@
 
 
 from flask import Flask,render_template,request,redirect,session
+import util
 
+util.update_data()
+print util.file_data
 app = Flask(__name__)
 app.secret_key='/sad/ikhkj?jklhd-908182903jk43-42348038401'
 
-@app.route('/')
-def index():
-    username = 'admin'
-    return render_template('index.html',username=username)
-    #return '<input type="text" value="123">'
-
 @app.route('/login')
 def login():
+    if 'user' in  session:
+        return redirect('/')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -26,29 +25,15 @@ def loginaction():
     passwd = request.form.get('passwd')
     if user=='admin' and passwd=='admin':
         session['user'] = 'admin'
-    return redirect('/data')
+    return redirect('/')
 
 
-@app.route('/data')
-def data():
+@app.route('/')
+def index():
     if 'user' not in  session:
         return redirect('/login')
-#    name = request.args.get('name')
-#    age = request.args.get('age')
-#    return 'hello '+name+age
-#    html_str = '<table border="1">'
-    userlist = []
-    with open('user.txt') as f:
-        for line in f:
-            tmp = line.split(':')
-            if len(tmp)==2:
-                userlist.append(tmp)
-#        for line in f:
-#            tmp = line.split(':')
-#            if len(tmp)==2:
-#                html_str+='<tr><td>%s</td><td>%s</td></tr>'%(tmp[0],tmp[1])
-#    html_str+='</table>'
-    return render_template('data.html',userlist=userlist)
+
+    return render_template('data.html',userlist=util.file_data.items())
 
 @app.route('/adduser',methods=['post'])
 def adduser():
@@ -56,13 +41,25 @@ def adduser():
     user = request.form.get('user')
     password = request.form.get('password')
     print 'user is %s and paswd is %s'%(user,password)
-    with open('user.txt','a') as f:
-        f.write('\n'+user+':'+password)
-    return redirect('/data')
-@app.route('/test/<username>')
-def test(username):
-    return 'hello'+username
 
+    if user in util.file_data:
+        return 'user already exists'
+    else:
+        util.file_data[user] = password
+        util.update_file()
+        return redirect('/')
+
+
+@app.route('/deluser')
+def deluser():
+    print request.args
+    user = request.args.get('user')
+
+    if user in util.file_data:
+        util.file_data.pop(user)
+        print util.file_data
+        util.update_file()
+    return redirect('/')
 
 
 if __name__=='__main__':
