@@ -1,0 +1,24 @@
+<a href="/logout">logout</a>
+<table border="1">
+{% for user in userlist %}
+	<tr>
+		<td>{{user[0]}}</td>
+		<td>{{user[1]}}</td>
+	</tr>
+{% endfor %}
+</table>	
+<br>
+<br>
+<br>
+<form action="/deluser" method="post">
+	user:<input type="text" name='user'>
+	passwd:<input type="text" name='passwd'>
+	<input type="submit" value='删除' >
+</form>
+
+
+<form action="/adduser" method="post">
+	user:<input type="text" name='user'>
+	passwd:<input type="text" name='passwd'>
+	<input type="submit" value='新增' >
+</form>
