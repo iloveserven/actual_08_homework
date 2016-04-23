@@ -15,18 +15,19 @@ password: <input type='password' name='password'>
 
 <form action="/userdel" method="post">
 <table class="table table-striped">
-    <tr><td></td><td>用户名</td><td>密码</td></tr>
+    <tr><td></td><td>用户名</td><td>密码</td><td>修改</td></tr>
 {%
     for i in user_list
     %}
 <tr>
-    <td><input type="radio" name="name" value="{{i[0]}}_{{i[1]}}"></td>
+    <td><input type="radio" name="name" value="{{i[0]}}"></td>
     <td>{{i[0]}}</td>
     <td>{{i[1]}}</td>
+    <td><input type=button value='修改密码' onclick="location='useredit?user={{i[0]}}'"></td>
 </tr>
 {%
     endfor
     %}
-<tr><td colspan="3" align="center"><input type="submit" value="删除"> <input type="reset" value="重置"></td></tr>
+<tr><td colspan="4" align="center"><input type="submit" value="删除"> <input type="reset" value="重置"></td></tr>
 </table>
 </form>
