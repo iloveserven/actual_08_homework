@@ -1,3 +1,32 @@
+<a href='/logout'>
+logout
+</a>
+<form action='adduser' method='post'>
+<input type='text' name='user'>
+<input type='password' name='passwd'>
+<input type='submit' value='adduser'> 
+</form>
+
+<table border='1'>
+{% for user in userlist %}
+<tr>
+	<td>{{user[0]}}</td>
+	<td>{{user[1]}}</td>
+	<td>
+		<a href=/Deuser?user={{user[0]}}'>delete</a>
+	</td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+
+
+
+
+
+<!--
 <form action='adduser' method='post'>
 
 <input type='text' name='user'>
@@ -26,3 +55,4 @@ user:<input type='text' name='user'>
 </tr>
 {% endfor %}
 </table>
+-->
