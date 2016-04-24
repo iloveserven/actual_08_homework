@@ -47,10 +47,13 @@ def adduser():
 def Deuser():
         print request.args
         user=request.args.get('user')
+        print user
+        print aadat.file_data
         if user in aadat.file_data:
                 aadat.file_data.pop(user)
                 print aadat.file_data
                 aadat.update_file()
+
         return redirect('/')
 
 if __name__ == '__main__':

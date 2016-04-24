@@ -3,7 +3,7 @@ logout
 </a>
 <form action='adduser' method='post'>
 <input type='text' name='user'>
-<input type='password' name='passwd'>
+<input type='password' name='password'>
 <input type='submit' value='adduser'> 
 </form>
 
@@ -13,7 +13,7 @@ logout
 	<td>{{user[0]}}</td>
 	<td>{{user[1]}}</td>
 	<td>
-		<a href=/Deuser?user={{user[0]}}'>delete</a>
+		<a href='/Deuser?user={{user[0]}}'>delete</a>
 	</td>
 </tr>
 {% endfor %}
