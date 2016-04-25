@@ -1,0 +1,34 @@
+<html>
+<head>
+	<title>reboot homework 7</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<table  class="table table-striped">
+		<tr>
+			<td colspan="3">welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
+				{% if is_admin %}
+				<input type="button" value="用户管理" onclick="location.href='/userlist'">
+				{% endif %}
+			</td>
+			<td>
+				<input type="button" value="退出" onclick="location.href='/logout'">
+			</td>
+		</tr>
+		<tr>
+			<td>NO.</td>
+			<td>IP</td>
+			<td>STATUS</td>
+			<td>NUM</td>
+		</tr>
+		{% for row in accesslist %}
+		<tr>
+			<td>{{loop.index}}</td>
+			<td>{{row['ip']}}</td>
+			<td>{{row['status']}}</td>
+			<td>{{row['access_num']}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</body>
+</html>
