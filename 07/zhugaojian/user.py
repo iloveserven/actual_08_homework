@@ -3,6 +3,7 @@
 
 import mysqldb as db
 
+
 def adduser(username,password):
 	sql = "insert into user(name,password) values('%s','%s')"%(username,password)
 	count = db.execute(sql)
@@ -14,20 +15,21 @@ def edituser(userid,password):
 	count = db.execute(sql)
 	return count
 
+
 def deluser(userid):
 	sql = "delete from user where id=%s"%(userid)
 	count = db.execute(sql)
 	return count
 
 
-def userlist():
-	sql = "select id,name,password from user"
+def userlist(order='name'):
+	sql = "select id,name,password from user order by %s"%(order)
 	res = db.select_all(sql)
 	return res
 
 
-def userlist_by_page(page_int=1,page_size=10):
-	sql = "select id,name,password from user"
+def userlist_by_page(order='name',page_int=1,page_size=10):
+	sql = "select id,name,password from user order by %s"%(order)
 	res = db.select_by_page(sql,page_int,page_size)
 	return res
 

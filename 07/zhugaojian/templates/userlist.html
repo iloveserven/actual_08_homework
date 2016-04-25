@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>reboot homework 7</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <table  class="table table-striped">
+        <tr>
+            <td colspan="3">Welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" value="日志统计" onclick="location.href='/'">
+            </td>
+            <td>
+                <input type="button" value="退出" onclick="location.href='/logout'">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <form action="/adduser" method="post">
+                    用户名：<input type="text" name="name">
+                    密码：<input type="password" name="password">
+                    <input type="submit" value="添加">
+                    <input type="reset" value="重置">
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>用户名</td>
+            <td>密码</td>
+            <td>操作</td>
+        </tr>
+        {% for row in userlist %}
+        <tr>
+            <td>{{loop.index+(page_int-1)*page_size}}</td>
+            <td>{{row['name']}}</td>
+            <td>{{row['password']}}</td>
+            <td>
+                {% if 'admin' != row['name'] and 'admin' != row['password'] %}
+                    <a href="/edituser?userid={{row['id']}}">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/deluser?userid={{row['id']}}">删除</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
+                {% if page_int != 1 %}
+                <a href="/userlist?page_int=1">第一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/userlist?page_int={{page_int-1}}">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                {% endif %}
+                {% if page_int != page_num %}
+                <a href="/userlist?page_int={{page_int+1}}">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/userlist?page_int={{page_num}}">最后一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

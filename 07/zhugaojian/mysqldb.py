@@ -28,7 +28,7 @@ def select_all(sql):
 
 def select_by_page(sql,page_int=1,page_size=10):
     try:
-        sql = 'select * from (%s) t limit %s,%s'%(sql,(page_int-1)*page_size,page_size)
+        sql = 'select * from (%s) t limit %s,%s'%(sql,(int(page_int)-1)*int(page_size),int(page_size))
         cur.execute(sql)
         return cur.fetchall()
     except MySQLdb.Error, e:

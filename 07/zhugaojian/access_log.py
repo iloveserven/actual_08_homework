@@ -7,6 +7,9 @@ rev_dict = {}
 res_dict = {}
 
 def get_max_many(max_many=10):
+	access_dict.clear()
+	rev_dict.clear()
+	res_dict.clear()
 	with open('www_access_20140823.log') as f:
 		for line in f:
 			tmp = line.split(' ')
@@ -53,16 +56,7 @@ def count_access_log():
 	return count
 
 
-def access_log_list_by_page(order='access_num',page_int=1,page_size=10):
+def access_log_list_by_page(order='access_num desc',page_int=1,page_size=10):
 	sql = "select id,ip,status,access_num from access_log_statistics order by %s"%(order)
 	res = db.select_by_page(sql,page_int,page_size)
 	return res
-
-
-if __name__ == '__main__':
-	get_max_many(100)
-	print del_all()
-	print insert_access()
-	print len(access_dict)
-	print len(rev_dict)
-	print len(res_dict)

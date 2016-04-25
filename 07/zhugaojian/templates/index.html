@@ -6,7 +6,7 @@
 <body>
 	<table  class="table table-striped">
 		<tr>
-			<td colspan="3">welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
+			<td colspan="3">Welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
 				{% if is_admin %}
 				<input type="button" value="用户管理" onclick="location.href='/userlist'">
 				{% endif %}
@@ -16,19 +16,44 @@
 			</td>
 		</tr>
 		<tr>
+			<td colspan="4">
+				{% if is_admin %}
+				<form action="/statistics" method="post">
+					重新统计排名前<input type="text" name="top_num">次记录
+					<input type="submit" value="统计">
+				</form>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
 			<td>NO.</td>
 			<td>IP</td>
 			<td>STATUS</td>
-			<td>NUM</td>
+			<td>COUNT</td>
 		</tr>
 		{% for row in accesslist %}
 		<tr>
-			<td>{{loop.index}}</td>
+			<td>{{loop.index+(page_int-1)*page_size}}</td>
 			<td>{{row['ip']}}</td>
 			<td>{{row['status']}}</td>
 			<td>{{row['access_num']}}</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
+				{% if page_int != 1 %}
+				<a href="/?page_int=1">第一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/?page_int={{page_int-1}}">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{% endif %}
+				{% if page_int != page_num %}
+				<a href="/?page_int={{page_int+1}}">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/?page_int={{page_num}}">最后一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{% endif %}
+			</td>
+		</tr>
 	</table>
 </body>
 </html>
