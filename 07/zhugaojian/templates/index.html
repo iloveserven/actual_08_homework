@@ -43,7 +43,7 @@
 			<td colspan="4"></td>
 		</tr>
 		<tr>
-			<td colspan="4" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
+			<td colspan="3" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
 				{% if page_int != 1 %}
 				<a href="/?page_int=1">第一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="/?page_int={{page_int-1}}">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -52,6 +52,19 @@
 				<a href="/?page_int={{page_int+1}}">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="/?page_int={{page_num}}">最后一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				{% endif %}
+			</td>
+			<td>
+				<form action="/changepagesize" method="post">
+					每页显示<select name="page_size">
+						<option value="5" {% if page_size==5 %} selected {% endif %}>5</option>
+						<option value="10" {% if page_size==10 %} selected {% endif %}>10</option>
+						<option value="20" {% if page_size==20 %} selected {% endif %}>20</option>
+						<option value="50" {% if page_size==50 %} selected {% endif %}>50</option>
+						<option value="100" {% if page_size==100 %} selected {% endif %}>100</option>
+					</select>条
+					<input type="hidden" name="cur_url" value="{{cur_url}}">
+					<input type="submit" value="更改">
+				</form>
 			</td>
 		</tr>
 	</table>
