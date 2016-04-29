@@ -1,0 +1,19 @@
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<p align="center">User info.</p>
+
+
+<table class="table table-striped">
+<tr>
+    <td>id</td>
+    <td>username</td>
+    <td>password</td>
+</tr>
+{% for user in user_dict %}
+
+<tr>
+    <td>{{loop.index}}</td>
+    <td>{{user}}</td>
+    <td>{{user_dict[user]}}</td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,33 @@
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<p align="right"><button><a href='/logout'>logout</a></button></p>
+user management----->please <button><a href='/user_management'>click</a></button>
+<p>Current user is {{cur_user}}</p>
+
+<p align="center">Log Top 100.</p>
+<table class="table table-striped">
+<tr>
+    <td>NO</td>
+    <td>IP</td>
+    <td>status</td>
+    <td>count</td>
+</tr>
+{% for data in data_list %}
+
+<tr>
+    <td>{{data[0]}}</td>
+    <td>{{data[1]}}</td>
+    <td>{{data[2]}}</td>
+    <td>{{data[3]}}</td>
+</tr>
+{% endfor %}
+</table>
+<form action='/data_count'>
+
+<input type='submit' name='previsous' value='上一页'>
+<input type='submit' name='next' value='下一页'>
+</form>
+<p align="center">Current {{page}}/all {{all_page}} pages</p>
+<form>
+<p>return page<input type='text' name='page'>
+<input type='submit' name='defind_page' value='go'></p>
+</form>
