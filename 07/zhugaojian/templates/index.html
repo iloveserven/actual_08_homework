@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title>reboot homework 7</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<table  class="table table-striped">
+		<tr>
+			<td colspan="3">Welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
+				{% if is_admin %}
+				<input type="button" value="用户管理" onclick="location.href='/userlist'">
+				{% endif %}
+			</td>
+			<td>
+				<input type="button" value="退出" onclick="location.href='/logout'">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				{% if is_admin %}
+				<form action="/statistics" method="post">
+					重新统计排名前<input type="text" name="top_num">次记录
+					<input type="submit" value="统计">
+				</form>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>NO.</td>
+			<td>IP</td>
+			<td>STATUS</td>
+			<td>COUNT</td>
+		</tr>
+		{% for row in accesslist %}
+		<tr>
+			<td>{{loop.index+(page_int-1)*page_size}}</td>
+			<td>{{row['ip']}}</td>
+			<td>{{row['status']}}</td>
+			<td>{{row['access_num']}}</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="3" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
+				{% if page_int != 1 %}
+				<a href="/?page_int=1">第一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/?page_int={{page_int-1}}">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{% endif %}
+				{% if page_int != page_num %}
+				<a href="/?page_int={{page_int+1}}">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/?page_int={{page_num}}">最后一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{% endif %}
+			</td>
+			<td>
+				<form action="/changepagesize" method="post">
+					每页显示<select name="page_size">
+						<option value="5" {% if page_size==5 %} selected {% endif %}>5</option>
+						<option value="10" {% if page_size==10 %} selected {% endif %}>10</option>
+						<option value="20" {% if page_size==20 %} selected {% endif %}>20</option>
+						<option value="50" {% if page_size==50 %} selected {% endif %}>50</option>
+						<option value="100" {% if page_size==100 %} selected {% endif %}>100</option>
+					</select>条
+					<input type="hidden" name="cur_url" value="{{cur_url}}">
+					<input type="submit" value="更改">
+				</form>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
