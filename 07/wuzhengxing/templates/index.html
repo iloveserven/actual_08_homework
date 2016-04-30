@@ -1,0 +1,25 @@
+
+<link href="./static/bootstrap.min.css" rel="stylesheet">
+
+{% if user ==  'admin' %}
+<a href='/user'> show_user </a>
+{% endif %}
+<a href='/logout'>logout</a>
+<form action='/'>
+<input type='hidden' name='flag' value=0>
+<input type='submit' value='sort-desc'>
+</form>
+<form action='/'>
+<input type='hidden' name='flag' value=1>
+<input type='submit' value='sort'>
+</form>
+<table class="table table-striped">
+
+{% for user in userlist %}
+        <tr>
+                <td>{{user[1]}}</td>
+                <td>{{user[2]}}</td>
+                <td>{{user[3]}}</td>
+        <tr>
+{% endfor %}
+</table>
