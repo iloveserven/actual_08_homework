@@ -1,0 +1,28 @@
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container">
+	<h3>数据信息</h3>
+		<table class='table table-bordered table-striped'>
+			<tr colspan="2" style="background-color:#99bbbb;">
+				<td>NUM</td>
+				<td>IP</td>
+				<td>STATUS</td>
+				<td>COUNT</td>
+			</tr>
+ 
+{% for user in ip_list %} 
+<tr> 
+        <td>{{user[0]}}</td>
+        <td>{{user[1]}}</td> 
+        <td>{{user[2]}}</td> 
+        <td>{{user[3]}}</td>
+</tr> 
+{% endfor %} 
+</table>
+
+<a href='/logout'>退出</a>
+
+</div>
+
