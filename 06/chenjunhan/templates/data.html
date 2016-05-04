@@ -1,0 +1,26 @@
+<h1>welcome to 90root!</h1>
+<img src="http://hdn.xnimg.cn/photos/hdn121/20130210/1845/h_main_4p51_f317000007ae113e.jpg"alt="">
+<p>
+
+<a href='/logout'>
+logout
+</a>
+</p>
+
+<form action='/adduser' method='post'>
+<input type='text' name='user'>
+<input type='text' name='password'>
+<input type='submit' name='adduser'>
+</form>
+
+<table border='1'>
+{% for user in userlist %}
+<tr>
+    <td>{{user[0]}}</td>
+    <td>{{user[1]}}</td>
+    <td>
+        <a href='/deluser?user={{user[0]}}>delete</a>'
+    </td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,25 @@
+<link href="./static/bootstrap.min.css" rel="stylesheet">
+<form action='/addusers'method='post'>
+user:<input type='text' name='user'>
+password:<input type='text' name='pwd'>
+<input type='submit' value='addusers'>
+</form>
+<a href='/out'>out</a>
+<table class="table table-striped">
+
+{% for user in userlist %}
+        <tr>
+                <td>{{user[1]}}</td>
+                <td>{{user[2]}}</td>
+                <td>
+                        <a href='/delusers?id={{user[0]}}'>delete</a>
+                </td>
+                <td>
+                        <form action='/updateusers' method='post'>
+                                <input type='hidden' name='id' value='{{user[0]}}'>
+                                <input type='text' name='pwd'>
+                                <input type='submit' value='update'>
+                        </form>
+        </tr>
+{% endfor %}
+</table>

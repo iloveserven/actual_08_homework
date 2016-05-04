@@ -1,0 +1,38 @@
+
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+<form action='modify' method='get'>
+
+<table class="table table-striped">
+<tr>
+    <td>用户名:<input type='text' name='add_user'>
+        密码:<input type='password' name='add_passwd'>
+        <a href=/modify>
+            <input type='submit' name='res' value='Add'>
+        </a>
+        <a href=/modify>
+            <input type='submit' name='res' value='Del'>
+        </a>
+    </td>
+    <td><a href=/logout>
+        注销
+        </a>
+    </td>
+</tr>
+</table>
+</form>
+
+<table class="table table-striped">
+
+<tr>
+	<td>用户名</td>
+	<td>密码</td>
+</tr>
+
+{% for user in _dict %}
+<tr>
+    <td>{{user}}</td>
+    <td>{{_dict.get(user)}}</td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <table border="0.1">
+            <tr>
+                <td>用户名</td>
+                <td>密&nbsp码</td>
+            </tr>
+            {% for k,v in users.items() %}
+            <form action="/del_user" method="post">
+                <tr>
+                    <td>{{k}}<input type="hidden" name="name" value={{k}}> </td>
+                    <td>{{v}}</td>
+                    <td><input type="submit" value="del"></td>
+                </tr>
+            </form>
+            {% endfor %}
+        </table>
+
+    <a href="/index">返回主页</a>
+</body>
+</html>

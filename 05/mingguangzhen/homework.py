@@ -8,6 +8,12 @@ def convert(_str = calc_str):
     _str = _str.replace('/',' / ')
     return _str.split()
 # 将取出的列表中的三个元素做运算
+oper_dict = {
+    '+': lambda x,y:x+y,
+    '-': lambda x,y:x-y,
+    '*': lambda x,y:x*y,
+    '/': lambda x,y:x/y
+}
 def calc(_list):
     #print _list
     if _list[1] == '+':

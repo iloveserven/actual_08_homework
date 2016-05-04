@@ -1,0 +1,32 @@
+<html>
+    </body>
+        {% if username=='admin'%}
+        <h2>Welcome {{username}}</h2> 
+        <a href='/logout'>登出</a>
+        {% endif %}
+	<!--
+
+        <hr />
+        <h3>1.添加用户</h3>
+        <form action='adduser' method='post'>
+            用户名:<input type='text' name='user'>
+            密码:<input type='password' name='passwd'>
+            添加:<input type='submit' value='adduser'>
+        </form>
+
+        <hr />
+        <h3>2.删除用户</h3>
+        <form action='deluser' method='post'>
+            用户名：<input type='text' name='user'>
+            <input type='submit' value='deluser'>
+        </form>
+
+	-->
+        <hr />
+        <h3>查看用户</h3>
+        <form action='data'>
+            <input type='submit' value='show'>
+        </form>
+
+    </body>
+</html>
