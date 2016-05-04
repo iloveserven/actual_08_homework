@@ -1,19 +1,34 @@
 <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+<form action='/adduser' method='post'>
+<p align='right'>
+	<button><a href='/data_count'>log-info</a></button>
+	<button><a href='/logout'>logout</a></button>
+</p>
+user:<input type='text' name='user'>
+password:<input type='password' name='pwd'>
+<input type='submit' name='commit' value='add'>
+</form>
+
 <p align="center">User info.</p>
-
-
 <table class="table table-striped">
 <tr>
     <td>id</td>
     <td>username</td>
     <td>password</td>
 </tr>
-{% for user in user_dict %}
+{% for user in user_info %}
 
 <tr>
     <td>{{loop.index}}</td>
-    <td>{{user}}</td>
-    <td>{{user_dict[user]}}</td>
+    <td>{{user[1]}}</td>
+    <td>{{user[2]}}</td>
+    <td><button><a href='/deluser?id={{user[0]}}'>del</a></button></td>
+    <td><form action='/update'>
+    		<input type='hidden' name='id' value='{{user[0]}}'>
+    		<input type='text' name='uppwd'>
+    		<input type='submit' value='update'>
+    	</form></td>
 </tr>
 {% endfor %}
 </table>

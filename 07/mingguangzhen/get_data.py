@@ -1,4 +1,5 @@
 #encoding=utf8
+#
 import MySQLdb as mysql
 
 all_lines = 100
@@ -20,17 +21,8 @@ def insert_db():
             ins_sql = 'insert into log_data (ip,status,count) values("%s","%s","%s")' % (tup[0][0], tup[0][1], tup[1])
             cursor.execute(ins_sql)
 
-def get_info(sql):
+def get_info(start,num):
+    sql = 'select * from log_data limit %s,%s' % (start,num)
     cursor.execute(sql)
     return cursor.fetchall()
 
-
-# id int not null auto_increment primary key
-# create table log_data (id int not null auto_increment primary key, ip varchar(255), status varchar(255), count varchar(255));
-# con = mysql.connect(db='mingguangzhen', host='180.153.191.128', user='reboot', passwd='reboot123')
-# con.autocommit(True)
-# cursor = con.cursor()
-
-# cursor.execute('select * from user')
-# cursor.execute('update user set password=\"%s\" where id=\"%s\"' % (pwd,id))
-# print cursor.fetchall()
