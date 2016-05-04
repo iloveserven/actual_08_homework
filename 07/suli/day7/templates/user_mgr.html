@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h4>用户列表</h4>
+    <table table width="600px" border="1" style="border-collapse:collapse">
+        <tr>
+            <td>ID</td>
+            <td>用户名</td>
+            <td>密&nbsp;码</td>
+            <td colspan="3">操作</td>
+        </tr>
+    {% for i in users%}
+        <tr>
+            {% for j in i %}
+            <td>{{j}}</td>
+            {% endfor %}
+            <td>
+                <form action="/update_user" method="post">
+                    <input type="hidden" name="u_id" value="{{i[0]}}">
+                    <input type="text" name="pwd" value="">
+                    <input type="submit" value="修改密码">
+                </form>
+            </td>
+            <td>
+                {% if i[0] != 1 %}
+                <form action="/del_user" method="post">
+                    <input type="hidden" name="u_id" value="{{i[0]}}">
+                    <input type="submit" value="删除">
+                </form>
+                {% endif %}
+            </td>
+
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <hr>
+    <br>
+    <h4>添加用户</h4>
+    <form action="/add_user" method="post">
+    <table table width="600px" border="1" style="border-collapse:collapse">
+        <tr>
+            <td>用户名</td>
+            <td>密&nbsp;码</td>
+            <td colspan="3">操作</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="username" value=""></td>
+            <td><input type="text" name="pwd" value=""></td>
+            <td><input type="submit" value="添加用户"></td>
+        </tr>
+    </table>
+    </form>
+    <a href="/index">返回首页</a>
+</body>
+</html>
