@@ -7,23 +7,36 @@ app = Flask(__name__)
 app.secret_key = '1234567890!@#$%^&*()'
 decide_boo = True
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        user = request.form.get('user')
+        pwd = request.form.get('pwd')
+        if user not in get_user.auth_info():
+            return 'user not exists.'
+        elif get_user.auth_info()[user] == pwd:
+            session['user'] = user
+            session['init'] = 0
+            session['m_page'] = 1
+            return redirect('/data_count')
+        else:
+            return 'password error.'
 
-@app.route('/activelogin', methods=['POST'])
-def activelogin():
-    user = request.form.get('user')
-    pwd = request.form.get('pwd')
-    if user not in get_user.auth_info():
-        return 'user not exists.'
-    elif get_user.auth_info()[user] == pwd:
-        session['user'] = user
-        session['init'] = 0
-        session['m_page'] = 1
-        return redirect('/data_count')
-    else:
-        return 'password error.'
+# @app.route('/activelogin', methods=['POST'])
+# def activelogin():
+#     user = request.form.get('user')
+#     pwd = request.form.get('pwd')
+#     if user not in get_user.auth_info():
+#         return 'user not exists.'
+#     elif get_user.auth_info()[user] == pwd:
+#         session['user'] = user
+#         session['init'] = 0
+#         session['m_page'] = 1
+#         return redirect('/data_count')
+#     else:
+#         return 'password error.'
 
 @app.route('/logout')
 def logout():
