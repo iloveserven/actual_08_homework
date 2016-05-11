@@ -35,41 +35,6 @@ def index():
 	return render_template('index.html',accesslist=accesslist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url,current="loglist")
 
 
-# @app.route('/test')
-# def test():
-#     if not 'user' in session:
-#        return redirect('/login')
-#     is_admin = session['is_admin']
-#     username = session['user']
-#     if 'page_size' in session:
-#         page_size = session['page_size']
-#     else:
-#         page_size = 10
-#         session['page_size'] = page_size
-#     page_int = request.args.get('page_int')
-#     if not page_int:
-#         page_int = 1
-#     cur_url = request.base_url
-#     accesslist = a_log.access_log_list_by_page(page_int=page_int,page_size=page_size)
-#     accesslistcount = a_log.count_access_log()
-#     if accesslistcount%page_size == 0:
-#         page_num = accesslistcount/page_size
-#     else:
-#         page_num = accesslistcount/page_size + 1
-#     return render_template('test.html',accesslist=accesslist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url)
-
-# @app.route('/page1')
-# def page1():
-#     return render_template('page1.html')
-
-# @app.route('/page2')
-# def page2():
-#     return render_template('page2.html')
-
-@app.route('/base')
-def base():
-	return render_template('base.html')
-
 @app.route('/userlist')
 def user_list():
 	if not 'user' in session:
