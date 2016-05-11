@@ -32,7 +32,7 @@ def index():
 		page_num = accesslistcount/page_size
 	else:
 		page_num = accesslistcount/page_size + 1
-	return render_template('index.html',accesslist=accesslist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url)
+	return render_template('index.html',accesslist=accesslist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url,current="loglist")
 
 
 # @app.route('/test')
@@ -66,6 +66,10 @@ def index():
 # def page2():
 #     return render_template('page2.html')
 
+@app.route('/base')
+def base():
+	return render_template('base.html')
+
 @app.route('/userlist')
 def user_list():
 	if not 'user' in session:
@@ -89,7 +93,7 @@ def user_list():
 		page_num = userlistcount/page_size
 	else:
 		page_num = userlistcount/page_size + 1
-	return render_template('userlist.html',userlist=userlist,username=username,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url)
+	return render_template('userlist.html',userlist=userlist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url,current="userlist")
 
 
 @app.route('/adduser',methods=['post'])
@@ -131,7 +135,7 @@ def edituser():
 		return redirect('/')
 	userid = request.args.get('userid')
 	user_info = user.user_by_id(userid)
-	return render_template('useredit.html',user_info=user_info,username=username)
+	return render_template('useredit.html',user_info=user_info,username=username,is_admin=is_admin,current="userlist")
 
 
 @app.route('/edituseraction',methods=['post'])
