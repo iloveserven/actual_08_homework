@@ -1,0 +1,73 @@
+
+{% extends 'layout.html' %}
+{% block body %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Web Project</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">设置</a></li>
+            <li><a href="#">概要</a></li>
+            <li><a href="/logout">退出</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/ip_list">数据列表<span class="sr-only">(current)</span></a></li>
+            <li><a href="#">报表</a></li>
+            <li><a href="#">分析</a></li>
+            <li><a href="#">导出</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+         <div class="row">
+          <div class="col-md-4"><h3>用户信息</h3></div>
+         </div>
+         <div class="table-responsive">
+		  <table class='table table-bordered table-striped'>
+		    <tr colspan="2" style="background-color:#99bbbb;">
+				<td>用户名</td>
+				<td>密码</td>
+				<td>更新密码</td>
+				<td>删除用户</td>
+			</tr>
+ 
+            {% for user in userlist %} 
+            <tr> 
+                <td>{{user[1]}}</td> 
+                <td>{{user[2]}}</td> 
+                <td>
+                  <form action='/edit' method='post'>
+        	      <input type='hidden' name='id' value='{{user[0]}}'>
+        	      <input type='text' name='passwd'>
+        	      <input type='submit' value='update'>
+        	      </form>
+                </td>
+                <td>
+                  <form action='/delete' method='post'>
+        	      <input type='hidden' name='id' value="{{user[0]}}">
+        	      <input type='submit' value='delete'>
+        	      </form>
+                </td>
+            </tr> 
+            {% endfor %} 
+         </table>
+        </div>
+{% endblock %}
