@@ -1,0 +1,97 @@
+{% extends "layout_page.html" %}
+
+<!-- {% block top_title %}
+<h2 class="form-signin-heading" style="margin:auto;">{{page_title}}</h2>
+{% endblock %} -->
+            {% block curr_user %}
+            <li><a>{{cur_u}}</a></li>
+            {% endblock %}
+
+{% block data_info %}
+ <h2 class="sub-header">Log-Count</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>IP</th>
+                  <th>Status</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in logs %}
+                <tr>
+                  <td>{{log[0]}}</td>
+                  <td>{{log[1]}}</td>
+                  <td>{{log[2]}}</td>
+                  <td>{{log[3]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+<!-- <nav>
+  <ul class="pager">
+  	{% if page>0 %}
+  	
+    <li><a href="/log_page?page={{page-1}}">Previous</a></li>
+    {% else %}
+    <li><a>Previous</a></li>
+    {% endif %} -->
+<nav>
+  <ul class="pager">
+  {% if page>1  %}
+    <li>
+      <a href="/log_page?page={{page-1}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="disabled">
+      <a aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    {% for pag in page_list %}
+    <!-- {% print pag %} -->
+    <li><a href="/log_page?page={{pag+1}}">{{pag+1}}</a></li>
+    {% endfor %}
+    <!-- <li><a href="/log_page?page=1">2</a></li>
+    <li><a href="/log_page?page=2">3</a></li>
+    <li><a href="/log_page?page=3">4</a></li>
+    <li><a href="/log_page?page=4">5</a></li>
+    <li><a href="/log_page?page=5">6</a></li>
+    <li><a href="/log_page?page=6">7</a></li>
+    <li><a href="/log_page?page=7">8</a></li>
+    <li><a href="/log_page?page=8">9</a></li>
+    <li><a href="/log_page?page=9">10</a></li> -->
+    {% if page<all_pages %}
+    <li>
+      <a href="/log_page?page={{page+1}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="disabled">
+      <a aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+	  <!-- {% if page<all_pages %}
+	
+    <li><a href="/log_page?page={{page+1}}">Next</a></li>
+    
+    {% else %}
+    
+    <li><a href="/log_page?page={{all_pages}}">Next</a></li>
+    {% endif %}
+
+  </ul>
+</nav> -->
+          </div> 
+
+{% endblock %}

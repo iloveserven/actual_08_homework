@@ -1,0 +1,54 @@
+
+{% extends "layout_page.html" %}
+
+<!-- {% block top_title %}
+<h2 class="form-signin-heading" style="margin:auto;">{{page_title}}</h2>
+{% endblock %} -->
+
+
+            {% block curr_user %}
+            <li><a>{{cur_u}}</a></li>
+            {% endblock %}
+{% block data_info %}
+
+
+<!-- -->
+ <h2 class="sub-header">User-Management</h2>
+        <form action='/add_user' method='post'>
+        user:<input type='text' name='user'>
+        password:<input type='password' name='pwd'>
+        <input type='submit' name='commit' value='add'>
+        </form>
+        <p></p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>username</th>
+                  <th>password</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for user in user_info %}
+                <tr>
+                  <td>{{loop.index}}</td>
+                  <td>{{user[1]}}</td>
+                  <td>{{user[2]}}</td>
+                  <td><button><a href='/del_user?id={{user[0]}}'>del</a>
+                  </button>
+                  </td>
+                  <td>
+                  <form action='/update_user'>
+                    <input type='hidden' name='id' value='{{user[0]}}'>
+                    <input type='text' name='uppwd'>
+                    <input type='submit' value='update'>
+                  </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}
