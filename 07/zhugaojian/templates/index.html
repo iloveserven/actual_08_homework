@@ -4,8 +4,11 @@
 	<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<table  class="table table-striped">
-		<tr>
+	<div class="container">
+		<div class="row">
+			<div class=" col-md-10 col-md-offset-1">
+	<table  class="table table-striped table-bordered table-hover">
+		<tr class="active">
 			<td colspan="3">Welcom {{username}}&nbsp;&nbsp;&nbsp;&nbsp;
 				{% if is_admin %}
 				<input type="button" value="用户管理" onclick="location.href='/userlist'">
@@ -15,7 +18,7 @@
 				<input type="button" value="退出" onclick="location.href='/logout'">
 			</td>
 		</tr>
-		<tr>
+		<tr class="success">
 			<td colspan="4">
 				{% if is_admin %}
 				<form action="/statistics" method="post">
@@ -25,35 +28,42 @@
 				{% endif %}
 			</td>
 		</tr>
-		<tr>
-			<td>NO.</td>
-			<td>IP</td>
-			<td>STATUS</td>
-			<td>COUNT</td>
+		<tr class="warning">
+			<th>NO.</th>
+			<th>IP</th>
+			<th>STATUS</th>
+			<th>COUNT</th>
 		</tr>
 		{% for row in accesslist %}
-		<tr>
+		<tr >
 			<td>{{loop.index+(page_int-1)*page_size}}</td>
 			<td>{{row['ip']}}</td>
 			<td>{{row['status']}}</td>
 			<td>{{row['access_num']}}</td>
 		</tr>
 		{% endfor %}
-		<tr>
+		<tr class="info">
 			<td colspan="4"></td>
 		</tr>
-		<tr>
-			<td colspan="3" align="center">第{{page_int}}页/共{{page_num}}页&nbsp;&nbsp;&nbsp;&nbsp;
+		<tr class="danger">
+			<td colspan="3" align="center">
+				<nav>
+				  <ul class="pager">第{{page_int}}页/共{{page_num}}页
 				{% if page_int != 1 %}
-				<a href="/?page_int=1">第一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/?page_int={{page_int-1}}">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<li><a href="/?page_int=1">第一页</a></li>
+				<li><a href="/?page_int={{page_int-1}}">上一页</a></li>
 				{% endif %}
 				{% if page_int != page_num %}
-				<a href="/?page_int={{page_int+1}}">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/?page_int={{page_num}}">最后一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<li><a href="/?page_int={{page_int+1}}">下一页</a></li>
+				<li><a href="/?page_int={{page_num}}">最后一页</a></li>
 				{% endif %}
+				</ul>
+				</nav>
 			</td>
 			<td>
+				<nav>
+				  <ul class="pager">
+				  	<li>
 				<form action="/changepagesize" method="post">
 					每页显示<select name="page_size">
 						<option value="5" {% if page_size==5 %} selected {% endif %}>5</option>
@@ -63,10 +73,13 @@
 						<option value="100" {% if page_size==100 %} selected {% endif %}>100</option>
 					</select>条
 					<input type="hidden" name="cur_url" value="{{cur_url}}">
-					<input type="submit" value="更改">
-				</form>
+					<input type="submit" class="btn btn-default" value="更改">
+				</form></li>
+			</ul>
+				</nav>
 			</td>
 		</tr>
 	</table>
+</div></div></div>
 </body>
 </html>
