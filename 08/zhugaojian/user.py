@@ -5,8 +5,14 @@ import mysqldb as db
 
 
 def adduser(username,password):
+	count = 0
 	sql = "insert into user(name,password) values('%s','%s')"%(username,password)
-	count = db.execute(sql)
+	try:
+		count = db.execute(sql)
+	except Exception, e:
+		print e
+		return 0
+	
 	return count
 
 

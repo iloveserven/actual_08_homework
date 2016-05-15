@@ -18,7 +18,10 @@
           </div>
 			{% endif %}
           {% endblock %}
+          
           {% block content %}
+          <button id="showmsg" class="btn btn-success">showmsg</button>
+          <div class="alert alert-warning" id="msg"></div>
           <h2 class="sub-header">日志统计</h2>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -85,4 +88,13 @@
               </tbody>
             </table>
           </div>
+          
+          <script type="text/javascript" src="/static/jquery-1.11.3.js"></script>
+          <script type="text/javascript">
+          $('#showmsg').on('click',function(){
+            $.get('/testmsg',function(res){
+                $('#msg').html(res)
+            })
+          })
+          </script>
           {% endblock %}
