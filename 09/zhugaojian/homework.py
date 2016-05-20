@@ -31,7 +31,7 @@ def showtable():
 		page_num = accesslistcount/page_size
 	else:
 		page_num = accesslistcount/page_size + 1
-	return json.dumps(a_log.access_log_list_by_page(page_int=page_int,page_size=page_size))
+	return json.dumps(a_log.access_log_list())
 	# return render_template('logtable.html',accesslist=accesslist,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url)
 
 
