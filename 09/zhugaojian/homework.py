@@ -216,7 +216,6 @@ def deluser2():
 	if not is_admin:
 		return redirect('/index')
 	userid = request.form.get('userid')
-	print 'userid=',userid
 	count = user.deluser(userid)
 	if not count:
 		return 'error'
