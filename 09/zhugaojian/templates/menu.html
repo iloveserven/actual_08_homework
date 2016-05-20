@@ -1,0 +1,16 @@
+		<div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+          	{% if current=="loglist" %}
+            <li class="active"><a href="/index">日志统计 <span class="sr-only">(current)</span></a></li>
+            {% if is_admin %}
+            <li><a href="/userlist1">用户管理</a></li>
+            {% endif %}
+            {% endif %}
+            {% if current=="userlist" %}
+            <li><a href="/index">日志统计 </a></li>
+            {% if is_admin %}
+            <li class="active"><a href="/userlist1">用户管理<span class="sr-only">(current)</span></a></li>
+            {% endif %}
+            {% endif %}
+          </ul>
+        </div>
