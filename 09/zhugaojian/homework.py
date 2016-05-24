@@ -4,6 +4,7 @@
 from flask import Flask,session,redirect,render_template,request
 import mysqldb as db
 import user
+import server
 import access_log as a_log
 import time
 import json
@@ -128,6 +129,35 @@ def user_list():
 		page_num = userlistcount/page_size + 1
 	return render_template('userlist1.html',username=username,is_admin=is_admin,current="userlist")
 
+@app.route('/serverlist')
+def server_list():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	username = session['user']
+	return render_template('serverlist.html',username=username,is_admin=is_admin,current="serverlist")
+
+@app.route('/showserver')
+def showserver():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	username = session['user']
+	if 'page_size' in session:
+		page_size = session['page_size']
+	else:
+		page_size = 10
+		session['page_size'] = page_size
+	page_int = request.args.get('page_int')
+	if not page_int:
+		page_int = 1
+	cur_url = request.base_url
+	return json.dumps(server.serverlist())
+
 @app.route('/showuser')
 def showuser():
 	if not 'user' in session:
@@ -146,6 +176,16 @@ def showuser():
 		page_int = 1
 	cur_url = request.base_url
 	return json.dumps(user.userlist())
+
+@app.route('/userinfo')
+def userinfo():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	userid = request.args.get('id')
+	return json.dumps(user.user_by_id(userid))
 
 @app.route('/adduser',methods=['post'])
 def adduser():
@@ -180,6 +220,32 @@ def adduser1():
 		return 'error'
 	return 'ok'
 
+
+@app.route('/addserver',methods=['post','get'])
+def addserver():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	if request.method == 'POST':
+		name = request.form.get('name')
+		memory = request.form.get('memory')
+		expired_date = request.form.get('expired_date')
+		email = request.form.get('email')
+		note = request.form.get('note')
+	else:
+		name = request.args.get('name')
+		memory = request.args.get('memory')
+		expired_date = request.args.get('expired_date')
+		email = request.args.get('email')
+		note = request.args.get('note')
+	count = server.addserver(name, memory, expired_date, email, note)
+	if not count:
+		return 'error'
+	return 'ok'
+
+
 @app.route('/deluser',methods=['get'])
 def deluser():
 	if not 'user' in session:
@@ -203,6 +269,20 @@ def deluser1():
 		return redirect('/index')
 	userid = request.args.get('userid')
 	count = user.deluser(userid)
+	if not count:
+		return 'error'
+	return 'ok'
+
+
+@app.route('/delserver',methods=['post'])
+def delserver():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	serverid = request.form.get('serverid')
+	count = server.delserver(serverid)
 	if not count:
 		return 'error'
 	return 'ok'
@@ -246,8 +326,27 @@ def edituseraction():
 	password = request.form.get('password')
 	count = user.edituser(userid,password)
 	if not count:
-		return 'edit user failed!'
+		return 'error'
 	return redirect('/userlist')
+
+
+@app.route('/editserveraction',methods=['post'])
+def editserveraction():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/index')
+	serverid = request.form.get('serverid')
+	name = request.form.get('name')
+	memory = request.form.get('memory')
+	expired_date = request.form.get('expired_date')
+	email = request.form.get('email')
+	note = request.form.get('note')
+	count = server.editserver(serverid, name, memory, expired_date, email, note)
+	if not count:
+		return 'error'
+	return 'ok'
 
 
 @app.route('/changepagesize',methods=['post'])

@@ -44,7 +44,8 @@
             $.getJSON('/showtable',function(res){
                 console.log(res)
                 $.each(res,function(index,value){
-                    result += '<tr><td>'+index+'</td><td>'+value['ip']+'</td><td>'+value['status']+'</td><td>'+value['access_num']+'</td></tr>'
+                  seq = index+1
+                    result += '<tr><td>'+seq+'</td><td>'+value['ip']+'</td><td>'+value['status']+'</td><td>'+value['access_num']+'</td></tr>'
                 })
                 console.log(result)
                 $('#showlog').html(result)
