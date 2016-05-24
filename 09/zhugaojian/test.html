@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title></title>
+	<link href="./static/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/sweetalert-master/dist/sweetalert.css" rel="stylesheet">
+    <link href="./static/jquery-ui.css" rel="stylesheet">
+</head>
+    <script type="text/javascript" src="./static/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="./static/jquery-ui.js"></script>
+    <script type="text/javascript" src="./static/sweetalert-master/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="./static/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+<body>
+	<br>
+	<div id="slider"></div><span id='slider_value'></span>G
+	<input type="text" id="datepicker" name="expired_date">
+	<script type="text/javascript">
+		$("#slider").slider({
+			min:2,
+			max:32
+		});
+		$("#slider").slider( "option", "value", 10 );
+		value = $("#slider" ).slider( "option", "value" );
+		$('#slider_value').html(value)
+		$("#slider").on( "slide", function(event, ui) {
+			$('#slider_value').html(ui.value)
+			console.log(ui.value)
+		} );
+		$( "#datepicker" ).datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+	</script>
+</body>
+</html>
