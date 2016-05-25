@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-3.3.5-dist/css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='sweetalert-master/dist/sweetalert.css') }}"/>
+
+</head>
+<body>
+
+    <div id='talk' class="panel panel-default">
+      <div class="panel-heading"><input type="text" id="input"><button class="btn submit">提交</button></div>
+      <div class="panel-body">
+
+      </div>
+    </div>
+
+
+    <form id="addform" a="1" b="2">
+        username: <input type="text" name="username">
+        password: <input type="text" name="password">
+    </form>
+
+    <button id="testbtn" class="btn">点我</button>
+
+    <form id="loginform" data-a="hello python">
+        username: <input type="text" name="username">
+        password: <input type="text" name="password">
+    </form>
+
+    <script src="{{url_for('static',filename='jquery-1.12.1.min.js')}}"></script>
+    <script src="{{url_for('static',filename='sweetalert-master/dist/sweetalert.min.js')}}"></script>
+    <script>
+        <!--$('#addform').find('[name="password"]').val('hello')-->
+        <!--$('#loginform').find('[name="password"]').val('hehe')-->
+        <!--var a = $('#addform').attr('a')-->
+        <!--$('#addform').find('[name="password"]').val(a)-->
+        <!--var s = $('#loginform').data('a')-->
+        <!--$('#loginform').find('[name="password"]').val(s)-->
+        $('#testbtn').addClass('btn-primary')
+        $('#testbtn').on('click',function(){
+            $(this).toggleClass('btn-primary')
+        })
+
+        $('#talk').find('.submit').on('click',function(){
+            var input = $('#input').val()
+            var body = $('#talk').find('.panel-body')
+            if(input){
+                body.html(body.html()+ input +"<br>")
+                swal("发送成功", "消息已到达", "success")
+                }else{
+                swal("发送失败", "请输入内容", "error")
+                }
+            $('#input').val()
+        })
+    </script>
+</body>
+</html>
