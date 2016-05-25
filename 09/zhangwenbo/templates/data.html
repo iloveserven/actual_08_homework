@@ -1,0 +1,193 @@
+
+{% extends 'layout.html'%}
+
+{% block title %}
+<h3>用户信息</h3>
+{% endblock %}
+
+{% block body %}
+<button id='addModalBtn' type="button" class="btn btn-primary " data-toggle="modal" data-target="#addusermyModal">
+ 添加用户
+</button>  
+
+         <div class="table-responsive">
+		  <table class='table table-bordered table-striped'>
+		    <tr colspan="2" style="background-color:#99bbbb;">
+		    	<td>ID</td>
+				<td>用户名</td>
+				<td>密码</td>			
+				<td>删除用户</td>
+				<td>更新密码</td>
+			</tr>
+ 			<tbody id='tbody-content'>
+
+			</tbody>
+         </table>
+        </div>
+
+{% endblock %}
+
+
+{% block endbody %}
+        <!-- Modal -->
+<div class="modal fade" id="addusermyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+      </div>
+      <div class="modal-body">
+
+      <form class="form-signin" action='/adduser' id='addform'>
+ 
+         <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <div class="glyphicon glyphicon-user" aria-hidden="true"></div>
+              </div>
+              <input type="text" name='user' id="inputEmail" class="form-control" placeholder="用户名" required autofocus>        
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <div class="glyphicon glyphicon-lock" aria-hidden="true"></div>
+              </div>
+              <input type="text" name='password' id="inputPassword" class="form-control" placeholder="密 码" required>      
+            </div>
+          </div> 
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" >添加用户</button> 
+<!--           <button class="btn btn-lg btn-primary btn-block" id='addsubmit' type="submit">注册</button>   -->
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+       <!-- Modal -->
+<div class="modal fade" id="updatemyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">更新密码</h4>
+      </div>
+      <div class="modal-body">
+
+       <form class="form-signin" action='/edit' id='updateform'>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <div class="glyphicon glyphicon-lock" aria-hidden="true"></div>
+              </div>
+              <input type="text" name='pwd' id="inputPassword" class="form-control" placeholder="密 码" required>      
+            </div>
+          </div> 
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" >更新密码</button> 
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+$('#updatemyModal').find('.btn-primary').on('click',function(){
+	var userid = $('#updatemyModal').attr('data-userid')
+	var pwd = $('#updateform').find('[name="pwd"]').val()
+	$.post('/edit?id='+userid+'&pwd='+pwd,{
+		id:userid,
+		pwd:pwd
+	},function(res){
+		if (res=='ok'){
+			$('#updatemyModal').modal('hide')
+        	swal('success','update success','success')
+            getlist()
+        }else{
+            swal("Here's a message!",'please input password!', "error")
+		}
+	})	
+})
+
+$(document).on('click','.update-btn',function(){
+	var pwd = $(this).data('pwd')
+	var userid = $(this).data('id')
+	$('#updatemyModal').attr('data-userid',userid).modal('show')
+
+	$('#updateform').find('[name="pwd"]').val(pwd)
+})
+
+$('#addusermyModal').find('.btn-primary').on('click',function(){
+    var url = '/adduser?'+$('#addform').serialize()
+    var us = $('#addform').find('[name="user"]').val()
+    var ps = $('#addform').find('[name="password"]').val()
+    $.post(url,{
+    	user:us,
+    	password:ps
+    },function(res){
+        if(res=='ok'){
+        	$('#addusermyModal').modal('hide')
+        	swal('success','add success','success')
+            $('#addform')[0].reset()
+            getlist()
+        }else{
+            swal("Here's a message!",'please input user or password!', "error")
+        }
+    })
+    return false
+})
+
+function getlist(){
+var res = ''
+$.getJSON('/gettable',function(res){
+    $.each(res,function(index,value){
+    
+    res+='<tr><td>'+value[0]+'</td>'
+    res+='<td>'+value[1]+'</td>'
+    res+='<td>'+value[2]+'</td>'
+    res+='<td><button data-id="'+value[0]+'" class="btn btn-danger btn-xs delete-btn">delete</button></td>'
+    res+='<td><button data-pwd="'+value[2]+'" data-id="'+value[0]+'" class="btn btn-danger btn-xs update-btn">updateuser</button></td></tr>'
+    })
+    $('#tbody-content').html(res)
+
+})
+
+$(document).on('click','.delete-btn',function(){
+   var id = $(this).attr('data-id')
+   swal({
+  title: "Are you sure?",
+  text: "You will not be able to recover this imaginary file!",
+  type: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#DD6B55",
+  confirmButtonText: "Yes, delete it!",
+  closeOnConfirm: false,
+  html: false
+}, function(){
+
+        $.get('/delete?id='+id,function(res){
+            if(res=='ok'){
+                swal("success",'delete success', "success")
+                getlist()
+            }
+        })
+    
+    })
+})
+
+}
+getlist()
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{%extends "layout.html"%}
+
+<!-- {%block h1%}
+ 管理员
+ {%endblock%} -->
+
+ {%block div%}
+             <li class="active">
+            <a href ='usershow'>用户管理 </a>
+            </li>
+ {%endblock%}
+
+ {%block href %}
+ <a href="usershow">用户管理</a>
+ {%endblock%}
+
+<!-- {%block h2%}
+ 管理员
+{%endblock%} -->
+
+{% block  content %}
+<div  class="container">
+
+
+ <form class="form-inline"  action='/adduser' method='post'>
+ <div class='col-sm-3  col-md-4'>
+  <div class="form-group">
+<!-- <label for="exampleInputName2">UserName</label> -->
+<span class="glyphicon glyphicon-user"></span>
+  <input type='text' name='user'   class='form-control'>
+  </div>
+  </div>
+  <div class='col-sm-3  col-md-4'>
+  <div class="form-group">
+     <span class="glyphicon glyphicon-lock"></span>
+        <input type='text' name='pwd'  class='form-control'>
+  </div>
+  </div>
+<div class='col-sm-3  col-md-2'>
+  <button type="submit" class="btn btn-default">增加用户</button>
+  </div>
+</form>
+</div>
+
+<!--  <form action='/adduser' method='post'>
+
+ 
+       <div class="input-group">
+      <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+      <input type='text' name='user'   required autofocus>
+
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type='text' name='pwd'  required autofocus>
+     
+        <input type='submit' value='增加用户'>
+        
+            </div>
+    
+</form> -->
+
+<h3>User View</h3>
+<table  class="table table-striped"> 
+       
+                 <tr  class="warning">
+                 <th>##</th>
+                  <th>用户名</th>
+                  <th>用户密码</th>
+                  <th>删除</th>
+                  <th>用户密码编辑</th>
+                </tr>
+
+{% for user in userlist  %}
+<tr class="success">
+   <td  >{{loop.index}}</td>
+    <td  >{{user[1]}}</td>
+    <td  >{{user[2]}}</td>
+    <td  >
+        <a href='/deluser?id={{user[0]}}'><button type="submit" class="btn btn-default">删除</button></a>    
+    </td>
+
+        <td  class="info">
+            <form action='/updateuser'>
+                <input type='hidden' name='id' value='{{user[0]}}'>
+                <input type='text' name='pwd'>
+                <button type="submit" class="btn btn-default">编辑</button>
+             <!--    <input type='submit' value='编辑'> -->
+            </form>
+        </td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+{% endblock%}

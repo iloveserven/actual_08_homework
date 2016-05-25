@@ -1,0 +1,51 @@
+LOGIN_USER:{{user}}<br><br>
+<form action='exec_file'>
+FILENAME:<input type='text' name='file_name'>
+<input type='submit' value='FILE_EXEC'>
+</form>
+
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<table class="table table-striped">
+<tr>
+	<td>
+{% if user == 'admin' %}
+        <form action='show_user'>
+        <input type='submit' value='SHOW_USER'>
+        </form>
+{% else %}
+DEMO
+{% endif %}	
+	</td>
+	<td>
+	<form action='show'>
+	<input type='hidden' name='sort' value='0'>
+	<input type='submit' value='SORT-ASC'>
+	</form>
+	</td>
+	<td>
+	<form action='show'>
+	<input type='hidden' name='sort' value='1'>
+	<input type='submit' value='SORT-DESC'>
+	</form>
+	</td>
+	<td>
+	<form action='logout'>
+	<input type='submit' value='LOGOUT'>
+	</form>
+	</td>
+</tr>
+<tr>
+                <td>NO</td>
+                <td>IP</td>
+                <td>STATUS</td>
+                <td>COUNT</td>
+</tr>
+{% for info in res_lst %}
+<tr>
+	<td>{{loop.index}}</td>
+	<td>{{info[1]}}</td>
+	<td>{{info[2]}}</td>
+	<td>{{info[3]}}</td>
+</tr>
+{% endfor %}
+</table>

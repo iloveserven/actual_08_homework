@@ -1,0 +1,27 @@
+<table border=1>
+<tr>
+<td>username</td>
+<td>password</td>
+<td>delete</td>
+</tr>
+{% for i in datalist %}
+<tr>
+<td>{{i[0]}}</td>
+<td>{{i[1]}}</td>
+<td>
+<form action='/deluser' method='post'>
+<input type='hidden' name='deluser' value={{':'.join(i)}}>
+<input type='submit' value='delete'>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+<form action='/to_adduser' method='post'>
+<input type='hidden' name='to_adduser' value='yes'>
+<input type='submit' value='adduser'>
+</form>
+
+<a href='/logout'>
+logout
+</a>

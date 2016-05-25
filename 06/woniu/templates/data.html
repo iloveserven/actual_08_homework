@@ -1,0 +1,32 @@
+
+<h1>欢迎管理员大人莅临指导！</h1>
+<img src="http://img4.imgtn.bdimg.com/it/u=1608006441,3084100469&fm=21&gp=0.jpg" alt="">
+<p>
+	
+<a href='/logout'>
+
+logout
+</a>
+</p>
+
+<form action='/adduser' method='post'>
+
+<input type='text' name='user'>
+<input type='text' name='password'>
+<input type='submit' value='adduser'>
+
+</form>
+
+
+
+<table border='1'> 
+{% for user in userlist  %}
+<tr>
+    <td>{{user[0]}}</td>
+    <td>{{user[1]}}</td>
+    <td>
+    	<a href='/deluser?user={{user[0]}}'>delete</a>
+    </td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,33 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<div class="container">
+
+ <form action='/adduser' method='post'>   
+       name: <input type='text' name='user'>
+       passwd : <input type='password' name='pwd'>
+        <input type='submit' value='adduser'>
+        <a href="/data"> &nbsp &nbsp返回 </a>
+        <a href="/loginout"> &nbsp &nbsp退出</a>
+</form>
+{% for user in userlist %}
+
+<table class='table table-bordered table-striped'>
+   <tr colspan="2" style="background-color:#99bbbb;">
+        <td>{{loop.index}}</td>
+        <td>{{user[1]}}</td>
+        <td>{{user[2]}}</td>
+        <td>
+            <form  action='/update'>
+                <input type='hidden' name='id' value={{user[0]}}>
+                <input type='password' name='pwd'>
+                <input type='submit' value='update'> 
+            </form>
+        <td>
+            <a href='/deluser?id={{user[0]}}'>del</a>
+        </td>
+        </td>
+   </tr>
+
+{% endfor %}
+</table>
+</div>

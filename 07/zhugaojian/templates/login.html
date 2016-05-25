@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>reboot homework 7</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<!-- <table class="table table-striped">
+		<form action="/loginaction" method="POST">
+			<tr align="center">
+				<td>用户名：</td>
+				<td><input type="text" name="username"></td>
+			</tr>
+			<tr align="center">
+				<td>密码：</td>
+				<td><input type="password" name="password"></td>
+			</tr>
+			<tr align="center">
+				<td colspan="2"><input type="submit" value="登录">&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重置"></td>
+			</tr>
+		</form>
+	</table> -->
+
+	<div class="container col-md-2 col-md-offset-5">
+
+      <form class="form-signin" action="/loginaction" method="POST">
+        <h2 class="form-signin-heading">请登录</h2>
+        <div class="input-group">
+        <div class="input-group-addo"><button glyphicon glyphicon-user>&nbsp;&nbsp;&nbsp;&nbsp;</button></div>
+        <input type="text" id="inputEmail" name="username" class="form-control glyphicon glyphicon-user" placeholder="请输入用户名" required autofocus>
+        
+        </div>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="请输入密码" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+      </form>
+
+    </div>
+
+</body>
+</html>

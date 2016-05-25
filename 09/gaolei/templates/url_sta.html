@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Log
+{% endblock %}
+
+{% block sidebar %}
+ <li><a href="/user">用户</a></li>
+ <li class="active"><a href="#">日志</a></li>
+ {% endblock %}
+
+{% block body%} 
+<table class="table table-striped" style="margin-bottom:0">
+<thead>
+<tr>
+<th>#</th>
+<th>IP</th>
+<th>status</th>
+<th>count</th>
+</tr>
+</thead>
+<tbody id='table-display'>
+</tbody>
+<!--
+<nav>
+  <ul class="pager">
+    <li><a onClick="page_change('delete');return false" href="#">Previous</a></li>
+    <li><a onClick="page_change('plus');return false" href='#'>Next</a></li>
+  </ul>
+</nav>
+-->
+
+  <ul class="pager">
+    <li><a onClick="page_change('delete');return false" href="#" id="pre">Previous</a></li>
+    <li><a onClick="page_change('plus');return false" href='#' id="next">Next</a></li>
+  </ul>
+
+{%endblock%}
+
+
+
+{%block js%}
+
+<script>
+function getlist(){
+    var res = ''
+	$.getJSON('/getsta',function(res){
+	    $.each(res,function(index,value){
+		    res +='<tr><td>'+value[0]+'</td><td>'+value[1]+'</td><td>'+value[2]+'</td><td>'+value[3]+'</td></tr>'})
+			$('#table-display').html(res)})}
+getlist()
+</script>
+<!--
+<script>
+function next(){
+	$.get('/getpage?oper=plus',function(res){
+	    if (res=='ok'){
+		    getlist()}
+		else{
+		    alert('page complete')}
+			})
+}
+
+</script>
+
+<script>
+function previous(){
+    $.get('/getpage?oper=delete',function(res){
+	    if (res=='ok'){
+		    getlist()}
+		else {
+		    alert('page complete')}
+			})}
+
+</script>
+-->
+<script>
+function page_change(oper){
+    if(oper=='plus'){
+	    $.get('/getpage?oper=plus',function(res){
+		    if(res=='ok'){
+			    getlist()}
+			else{
+			    alert('page complete')}})}
+	else if(oper=='delete'){
+	    $.get('/getpage?oper=delete',function(res){
+		    if(res=='ok'){
+			    getlist()}
+			else{
+			    alert('page complete')}})}
+	else{
+	    alert('operation error')}}
+
+</script>
+
+
+
+
+
+{%endblock%}
