@@ -1,0 +1,42 @@
+
+{% extends 'layout.html' %}
+
+{% block title%}
+<h3>数据信息</h3>
+{% endblock %}
+{% block body %}
+
+                <div class="table-responsive">
+<!--                   <table class="table talbe-bordered table-striped"> -->
+                  <table id="table_id" class="display">
+                    <thead>
+                      <tr>
+                        <td>NUM</td>
+                        <td>IP</td>
+                        <td>STATUS</td>
+                        <td>COUNT</td>
+                      </tr>
+                   </thead>
+                  <tbody>
+                  {% for user in ip_list %} 
+                   <tr> 
+                        <td>{{user[0]}}</td>
+                        <td>{{user[1]}}</td> 
+                        <td>{{user[2]}}</td> 
+                        <td>{{user[3]}}</td>
+                   </tr> 
+                  {% endfor %} 
+                  </tbody>
+                 </table>
+                </div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
+{% endblock %}
+
