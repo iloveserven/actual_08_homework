@@ -17,19 +17,19 @@ def login():
     if request.method=='GET':
         return render_template('login.html')
     elif request.method=='POST':
-        user = request.form.get('user')
-        pwd = request.form.get('pwd')
+        user = request.form.get('ur')
+        pwd = request.form.get('pw')
         if user=='admin' and pwd=='admin':
             session['user']='admin'
-            return redirect('/')
+            return 'ok'
         else:
             sql = 'select * from user where username="%s" and password="%s"'%(user,pwd)
             res = db.execute(sql)
             if len(res)>0:
                 session['user'] = user
-                return redirect('/log')
+                return 'ok'
             else:
-                return 'not allowed'
+                return 'error'
 
 @app.route('/logout')
 def logout():
@@ -45,7 +45,7 @@ def index():
             username = session['user']
             return render_template('index.html',userlist=res,username=username)
         else:
-            return redirect('/log') 
+            return redirect('/zichan') 
     else:
         return redirect('/login')
 
