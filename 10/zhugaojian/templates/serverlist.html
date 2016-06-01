@@ -171,7 +171,7 @@
             }
             value = $("#slider" ).slider( "option", "value" );
             $('#addserverform').find('[name="memory"]').val(value);
-            $.get('/addserver?'+$('#addserverform').serialize(),function(res){
+            $.post('/addserver',$('#addserverform').serialize(),function(res){
                 if (res == 'error')
                 {
                     // alert("添加失败")

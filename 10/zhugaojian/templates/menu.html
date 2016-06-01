@@ -1,23 +1,17 @@
 		<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            {% if current=="loglist" %}
-            <li class="active"><a href="/index">日志统计 <span class="sr-only">(current)</span></a></li>
-            {% else %}
             <li><a href="/index">日志统计 </a></li>
-            {% endif %}
             {% if is_admin %}
-                {% if current=="userlist" %}
-                <li class="active"><a href="/userlist1">用户管理<span class="sr-only">(current)</span></a></li>
-                {% else %}
-                <li><a href="/userlist1">用户管理</a></li>
-                {% endif %}
-            {% endif %}
-            {% if is_admin %}
-                {% if current=="serverlist" %}
-                <li class="active"><a href="/serverlist">服务器管理<span class="sr-only">(current)</span></a></li>
-                {% else %}
-                <li><a href="/serverlist">服务器管理</a></li>
-                {% endif %}
+            <li><a href="/userlist1">用户管理</a></li>
+            <li><a href="/serverlist">服务器管理</a></li>
             {% endif %}
           </ul>
         </div>
+        <script type="text/javascript">
+            var pathname = location.pathname
+            $.each($('.sidebar').find('a'),function(i,v){
+                if($(v).attr('href')==pathname){
+                    $(v).parent().addClass('active')
+                }
+            })
+        </script>

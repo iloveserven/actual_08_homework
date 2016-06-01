@@ -1,7 +1,10 @@
 #!/bin/env python
 # coding=utf-8
 
-import mysqldb as db
+import mysqldb
+
+
+db = mysqldb.DB()
 
 
 def addserver(name,memory,expired_date,email,note):

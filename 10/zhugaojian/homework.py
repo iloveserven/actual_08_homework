@@ -2,12 +2,15 @@
 # coding=utf-8
 
 from flask import Flask,session,redirect,render_template,request
-import mysqldb as db
+import mysqldb
 import user
 import server
 import access_log as a_log
 import time
 import json
+from sendemail import SendMail
+
+db = mysqldb.DB()
 
 app = Flask(__name__)
 app.secret_key='asdfqwew987aakfa98&*^(asfqwer'
@@ -196,7 +199,8 @@ def adduser():
 		return redirect('/index')
 	name = request.form.get('name')
 	password = request.form.get('password')
-	count = user.adduser(name, password)
+	email = request.form.get('useremail')
+	count = user.adduser(name, password,email)
 	if not count:
 		return 'add user failed!'
 	return redirect('/userlist')
@@ -212,10 +216,12 @@ def adduser1():
 	if request.method == 'POST':
 		name = request.form.get('name')
 		password = request.form.get('password')
+		email = request.form.get('useremail')
 	else:
 		name = request.args.get('name')
 		password = request.args.get('password')
-	count = user.adduser(name, password)
+		email = request.args.get('useremail')
+	count = user.adduser(name, password,email)
 	if not count:
 		return 'error'
 	return 'ok'
@@ -296,6 +302,12 @@ def deluser2():
 	if not is_admin:
 		return redirect('/index')
 	userid = request.form.get('userid')
+	res = user.user_by_id(userid)
+	name = res['name']
+	password = res['password']
+	email = res['email']
+	m = SendMail('Delete account %s'%name ,'name:%s email:%s was delete.'%(name,email),'%s<%s>'%(name,email))
+	m.send_mail()
 	count = user.deluser(userid)
 	if not count:
 		return 'error'
@@ -324,7 +336,8 @@ def edituseraction():
 		return redirect('/index')
 	userid = request.form.get('userid')
 	password = request.form.get('password')
-	count = user.edituser(userid,password)
+	email = request.form.get('useremail')
+	count = user.edituser(userid,password,email)
 	if not count:
 		return 'error'
 	return redirect('/userlist')

@@ -1,6 +1,8 @@
 #!/bin/env python
 # coding=utf-8
-import mysqldb as db
+import mysqldb
+
+db = mysqldb.DB()
 
 access_dict = {}
 rev_dict = {}

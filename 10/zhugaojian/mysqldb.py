@@ -3,90 +3,97 @@
 
 import MySQLdb
 import time
+import config
 
-conn = None
-cur =None
+class DB():
+    def __init__(self,host=config.host,user=config.user,passwd=config.passwd,port=config.port,db=config.db,charset=config.charset,autocommit=config.autocommit):
+        self.host = host
+        self.user = user
+        self.passwd = passwd
+        self.port = port
+        self.db = db
+        self.charset = charset
+        self.autocommit = autocommit
+        self.connect()
 
-def connect():
-    global conn
-    global cur
-    try:
-        conn = MySQLdb.connect(host='180.153.191.128',user='reboot',passwd='reboot123',port=3306,db='zhugaojian',charset="utf8",autocommit=True)
-        cur = conn.cursor(MySQLdb.cursors.DictCursor)
-    except MySQLdb.Error, e:
-        print "Mysql Error %d: %s" % (e.args[0], e.args[1])
-
-def tryexecute(sql):
-    try:
-        count = cur.execute(sql)
-    except (AttributeError, MySQLdb.OperationalError):
+    def connect(self):
         try:
-            cur.close()
-            conn.close()
-        except:
-            pass
-        time.sleep(1)
+            self.conn = MySQLdb.connect(host=self.host,user=self.user,passwd=self.passwd,port=self.port,db=self.db,charset=self.charset,autocommit=self.autocommit)
+            self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
+        except MySQLdb.Error, e:
+            print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+
+    def tryexecute(self,sql):
         try:
-            connect()
-            count = cur.execute(sql)
+            count = self.cur.execute(sql)
         except (AttributeError, MySQLdb.OperationalError):
-            time.sleep(2)
-            connect()
-            count = cur.execute(sql)
-    return count
-
-def countselect(sql):
-    try:
-        tryexecute(sql)
-        return cur.rowcount
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
-
-
-def select_all(sql):
-    try:
-        tryexecute(sql)
-        return cur.fetchall()
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
-
-
-def select_by_page(sql,page_int=1,page_size=10):
-    try:
-        sql = 'select * from (%s) t limit %s,%s'%(sql,(int(page_int)-1)*int(page_size),int(page_size))
-        tryexecute(sql)
-        return cur.fetchall()
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
-
-
-def select_one(sql):
-    try:
-        tryexecute(sql)
-        return cur.fetchone()
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
-
-
-def select_many(sql,size=None):
-    try:
-        tryexecute(sql)
-        return cur.fetchmany(size=size)
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
-
-
-def execute(sql):
-    try:
-        count = tryexecute(sql)
+            try:
+                self.cur.close()
+                self.conn.close()
+            except:
+                pass
+            time.sleep(1)
+            try:
+                self.connect()
+                count = self.cur.execute(sql)
+            except (AttributeError, MySQLdb.OperationalError):
+                time.sleep(2)
+                self.connect()
+                count = self.cur.execute(sql)
         return count
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+    def countselect(self,sql):
+        try:
+            self.tryexecute(sql)
+            return self.cur.rowcount
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
 
 
-def close():
-    try:
-        cur.close()
-        conn.close()
-    except MySQLdb.Error, e:
-        print "Mysql Error:%s"%(e)
+    def select_all(self,sql):
+        try:
+            self.tryexecute(sql)
+            return self.cur.fetchall()
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+
+    def select_by_page(self,sql,page_int=1,page_size=10):
+        try:
+            sql = 'select * from (%s) t limit %s,%s'%(sql,(int(page_int)-1)*int(page_size),int(page_size))
+            self.tryexecute(sql)
+            return self.cur.fetchall()
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+
+    def select_one(self,sql):
+        try:
+            self.tryexecute(sql)
+            return self.cur.fetchone()
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+
+    def select_many(self,sql,size=None):
+        try:
+            self.tryexecute(sql)
+            return self.cur.fetchmany(size=size)
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+
+    def execute(self,sql):
+        try:
+            count = self.tryexecute(sql)
+            return count
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s\nSQL:%s"%(e,sql)
+
+
+    def close(self):
+        try:
+            self.cur.close()
+            self.conn.close()
+        except MySQLdb.Error, e:
+            print "Mysql Error:%s"%(e)
