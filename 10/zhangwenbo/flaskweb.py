@@ -7,10 +7,12 @@ from flask import Flask,render_template,request,redirect,session
 # cursor = con.cursor()
 
 import dbutil
+import smtp
 import json
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
 app = Flask(__name__) 
 app.secret_key='sddddfrg4thdnaindi2398r2idnao01nidsnoi12ni' 
  
@@ -78,12 +80,12 @@ def hostlist():
     hostlist = json.dumps(dbutil.execute(sql))
     return hostlist
 
-@app.route('/addhost')
+@app.route('/addhost',methods=['post'])
 def addhost():
-        host1= request.args.get('host1')
-        host2= request.args.get('host2')
-        host3= request.args.get('host3')
-        host4= request.args.get('host4')
+        host1= request.form.get('host1')
+        host2= request.form.get('host2')
+        host3= request.form.get('host3')
+        host4= request.form.get('host4')
         if host1 =="" or host2=="" or host3=="" or host4=="":
             return 'error'
         sql= 'insert into host (hostname,memory,losetime,email) values ("%s","%s","%s","%s")' % (host1,host2,host3,host4)
@@ -94,20 +96,20 @@ def addhost():
         else: 
             return 'ok'
 
-@app.route('/deletehost')
+@app.route('/deletehost',methods=['post'])
 def deletehost():
-        id = request.args.get('id')
+        id = request.form.get('id')
         sql1 = 'delete from host where id=%s' % (id)
         dbutil.execute(sql1)
         return 'ok'
 
-@app.route('/updatehost')
+@app.route('/updatehost',methods=['post'])
 def updatehost():
-        id = request.args.get('id')
-        h1 = request.args.get('h1')
-        h2 = request.args.get('h2')
-        h3 = request.args.get('h3')
-        h4 = request.args.get('h4')
+        id = request.form.get('id')
+        h1 = request.form.get('h1')
+        h2 = request.form.get('h2')
+        h3 = request.form.get('h3')
+        h4 = request.form.get('h4')
         if id=="" or h1 =="" or h2=="" or h3=="" or h4=="":
             return 'error'
         sql = 'update host set hostname="%s",memory="%s",losetime="%s",email="%s" where id=%s '% (h1,h2,h3,h4,id)
@@ -132,17 +134,19 @@ def adduser():
         else: 
             return 'ok' 
 
-@app.route('/delete')
+@app.route('/delete',methods=['post'])
 def delete():
-        id = request.args.get('id')
+        id = request.form.get('id')
         sql1 = 'delete from user where id=%s' % (id)
         dbutil.execute(sql1)
+        smtp.autosendmail(id)
         return 'ok'
 
 @app.route('/edit',methods=['post'])
 def edit():
         id = request.form.get('id')
         password = request.form.get('pwd') 
+        print id,password
         if password == "":
             return 'error'
         sql = 'update user set password="%s" where id=%s '% (password,id)

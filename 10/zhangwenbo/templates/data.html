@@ -103,7 +103,7 @@
 $('#updatemyModal').find('.btn-primary').on('click',function(){
 	var userid = $('#updatemyModal').attr('data-userid')
 	var pwd = $('#updateform').find('[name="pwd"]').val()
-	$.post('/edit?id='+userid+'&pwd='+pwd,{
+	$.post('/edit',{
 		id:userid,
 		pwd:pwd
 	},function(res){
@@ -125,10 +125,10 @@ $(document).on('click','.update-btn',function(){
 })
 
 $('#addusermyModal').find('.btn-primary').on('click',function(){
-    var url = '/adduser?'+$('#addform').serialize()
+   // var url = '/adduser?'+$('#addform').serialize()
     var us = $('#addform').find('[name="user"]').val()
     var ps = $('#addform').find('[name="password"]').val()
-    $.post(url,{
+    $.post('/adduser',{
     	user:us,
     	password:ps
     },function(res){
@@ -171,7 +171,9 @@ $(document).on('click','.delete-btn',function(){
   closeOnConfirm: false,
   html: false
 }, function(){
-        $.get('/delete?id='+id,function(res){
+        $.post('/delete',{
+        	id:id
+        },function(res){
             if(res=='ok'){
                 swal("success",'delete success', "success")
                 getlist()
