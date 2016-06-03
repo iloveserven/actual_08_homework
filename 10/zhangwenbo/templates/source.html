@@ -40,11 +40,12 @@
  			    <h4>主机名称<input  type="text" name="host1" class="form-control"></h4>
  			    </div>
 		      	<div>
-		      	<div id="slider-range-max"></div>
+		      	
 		        <h5>
 		        <label for="amount">当前内存大小(G)</label>
 		        <input type="text" name="host2" id="amount" style="border: 0;color: #f6931f;font-weight: bold;">
 		        </h5>
+		        <div id="slider-range-max"></div>
 		        </div>
 		        <div>
 		      	<h4>过期时间<input type="text" name="host3" id="datepicker" class="form-control"></h4>
@@ -80,11 +81,12 @@
 		 			</div>
 
 			      	<div>
-			      	<div id="slider-range-max-update"></div>
+			      	
 			        <h5>
 			        <label for="amount-update">当前内存大小(G)</label>
 			        <input type="text" name="h2" id="amount-update" style="border: 0;color: #f6931f;font-weight: bold;">
 			        </h5>
+			        <div id="slider-range-max-update"></div>
 			        </div>
 
 			        <div>
@@ -118,7 +120,13 @@ $('#updatehostmyModal').find('.btn-primary').on('click',function(){
 	var h2 = $('#updatehost').find('[name="h2"]').val()
 	var h3 = $('#updatehost').find('[name="h3"]').val()
 	var h4 = $('#updatehost').find('[name="h4"]').val()
-	$.get('/updatehost?id='+hostid+'&h1='+h1+'&h2='+h2+'&h3='+h3+'&h4='+h4,function(res){
+	$.post('/updatehost',{
+		id:hostid,
+		h1:h1,
+		h2:h2,
+		h3:h3,
+		h4:h4
+	},function(res){
 		if (res=='ok'){
 			$('#updatehostmyModal').modal('hide')
         	swal('success','update success','success')
@@ -177,7 +185,12 @@ $("#addhostmyModal").find('.btn-primary').on('click',function(){
 	var host2 = $('#addhost').find('[name="host2"]').val()
 	var host3 = $('#addhost').find('[name="host3"]').val()
 	var host4 = $('#addhost').find('[name="host4"]').val()
-	$.get('/addhost?host1='+host1+'&host2='+host2+'&host3='+host3+'&host4='+host4,function(res){
+	$.post('/addhost',{
+		host1:host1,
+		host2:host2,
+		host3:host3,
+		host4:host4
+	},function(res){
 		if(res=='ok'){
         	$('#addhostmyModal').modal('hide')
         	swal('success','add success','success')
@@ -202,7 +215,7 @@ $(document).on('click','.delete-btn',function(){
   closeOnConfirm: false,
   html: false
 }, function(){
-        $.get('/deletehost?id='+id,function(res){
+        $.post('/deletehost',{id:id},function(res){
             if(res=='ok'){
                 swal("success",'delete success', "success")
                 hostlist()
