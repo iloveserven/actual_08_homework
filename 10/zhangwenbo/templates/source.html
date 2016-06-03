@@ -139,8 +139,18 @@ $('#updatehostmyModal').find('.btn-primary').on('click',function(){
 
 $(document).on('click','.update-btn',function(){
 	var hostid = $(this).data('id')
+	var hostname = $(this).data('h1')
+	var memory = $(this).data('h2')
+	var lost = $(this).data('h3')
+	var email = $(this).data('h4')
 	$('#updatehostmyModal').attr('data-hostid',hostid).modal('show')
+	$('#updatehost').find('[name="h1"]').val(hostname)
+	$('#updatehost').find('[name="h2"]').val(memory)
+	$('#updatehost').find('[name="h3"]').val(lost)
+	$('#updatehost').find('[name="h4"]').val(email)
+	$
 })
+	
 
 $(function(){
 	$("#slider-range-max-update").slider({
@@ -235,7 +245,7 @@ $.getJSON('/hostlist',function(hostlist){
     hostlist+='<td>'+value[3]+'</td>'
     hostlist+='<td>'+value[4]+'</td>'
     hostlist+='<td><button data-id="'+value[0]+'" class="btn btn-danger btn-xs delete-btn">delete</button></td>'
-    hostlist+='<td><button data-pwd="'+value[2]+'" data-id="'+value[0]+'" class="btn btn-danger btn-xs update-btn">update</button></td></tr>'
+    hostlist+='<td><button  data-id="'+value[0]+'" data-h1="'+value[1]+'" data-h2="'+value[2]+'" data-h3="'+value[3]+'" data-h4="'+value[4]+'" class="btn btn-danger btn-xs update-btn">update</button></td></tr>'
     })
     $('#tbody-content').html(hostlist)
 })
