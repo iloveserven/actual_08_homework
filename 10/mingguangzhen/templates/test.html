@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>测试网页</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+<script type="text/javascript" src="../static/js/jquery.js"></script>
+<script type="text/javascript" src="../static/jquery-ui/jquery-ui.min.js"></script>
+<style>
+.add_res_form_wid {
+          width: 60px;
+        }
+.bakgroud {
+          background:red;
+}
+</style>
+
+
+<body>
+
+
+
+
+<div class="container-fluid" id="left-top">
+      <div class="row">
+        <div class="col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+            <!-- <li class="active" data-tag="user"><a href="/user_page">用户管理</a></li> -->
+            <li class="active" data-tag="user"><a href="#">用户管理</a></li>
+            <li data-tag="log"><a href="#">日志浏览</a></li>
+            <li data-tag="res"><a href="#">资源管理</a></li>
+          </ul>
+         
+        </div>
+
+      </div>
+    </div>
+<script type="text/javascript">
+  $('#left-top').find('[data-tag="user"]').on('click', function(){
+    $(this).addClass('bakgroud')
+  })
+  $('#left-top').find('[data-tag="log"]').on('click', function(){
+    $(this).addClass('bakgroud')
+  })
+  $('#left-top').find('[data-tag="res"]').on('click', function(){
+    $(this).addClass('bakgroud')
+  })
+</script>
+<!-- <form class="form-inline animated bounceInLeft" id="resform" action='/add_user'>
+  <div class="form-group">
+    <label for="InputName" class="add_res_form_wid">主机名</label>
+    <input type="text" name="user" class="form-control" id="inputuser" placeholder="UserName">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="InputPwd" class="add_res_form_wid">CPU</label>
+    <input type="password" name="pwd" class="form-control" id="inputpwd" placeholder="Password">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="InputPwd" class="add_res_form_wid">内存</label>
+    <input type="password" name="pwd" class="form-control" id="inputpwd" placeholder="Password">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="InputPwd" class="add_res_form_wid">过期时间</label>
+    <input type="password" name="pwd" class="form-control" id="inputpwd" placeholder="Password">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="InputPwd" class="add_res_form_wid">负责人</label>
+    <input type="password" name="pwd" class="form-control" id="inputpwd" placeholder="Password">
+  </div>
+</form> -->
+
+</body>
+</html>

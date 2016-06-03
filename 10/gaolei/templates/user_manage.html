@@ -1,0 +1,213 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+User
+{% endblock %}
+
+{% block sidebar %}
+ <li class="active"><a href="#">用户</a></li>
+ <li><a href="/url">日志</a></li>
+ <li><a href="/host">主机</a></li>
+ {% endblock %}
+
+
+{% block body %}
+<!--
+<form id='addform' class="form-inline" >
+  <div class="form-group">
+    <label class="sr-only" for="username">username</label>
+    <input type='text' name='user' class="form-control" id="username" placeholder="username">
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="password">password</label>
+    <input type='text' name='passwd' id='password' class="form-control" placeholder="password">
+  </div>
+  <button id='adduser' type='submit' class="btn btn-default">Add user</button>
+</form>
+-->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary " id="modal-button">
+  Adduer
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="adduser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog " role="document">
+  <div class="container">
+  <div class="row">
+    <div class="modal-content col-xs-5">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Adduser</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline" >
+        <input type='text' name='user' class="form-control" placeholder="username">
+        <input type='text' name='passwd' class="form-control" placeholder="password">
+        </form>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+        <button type="button" class="btn btn-primary" id="adduser-submit">Adduser</button>
+      </div>
+	</div>
+	</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="update-user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" save="">
+  <div class="modal-dialog " role="document">
+  <div class="container">
+  <div class="row">
+    <div class="modal-content col-xs-5">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline" >
+        <input type='text' name="user" class="form-control" placeholder="" readonly>
+        <input type='text' name='passwd' class="form-control" placeholder="">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+        <button type="button" class="btn btn-primary" id="update-submit">Update</button>
+      </div>
+	</div>
+	</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<table class="table table-striped" style="margin-bottom:0;margin-top:15px">
+<thead>
+<tr>
+<th>#</th>
+<th>username</th>
+<th>password</th>
+<th>delete</th>
+<th>update</th>
+</tr>
+</thead>
+<tbody id='table-display'>
+
+</tbody>
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+var adduser = $('#adduser')
+var update = $('#update-user')
+$('#modal-button').on('click',function(){
+    $('#adduser').modal('show')})
+
+function getlist(){
+var res = ''
+$.getJSON('/getuser',function(res){
+    $.each(res,function(index,value){
+	
+	res +='<tr><td>'+value[0]+'</td>'
+	res +='<td>'+value[1]+'</td>'
+	res +='<td>'+value[2]+'</td>'
+	res +='<td><button data-id="'+value[0]+'"class="btn btn-danger btn-xs delete-btn">delete</button></td>'
+	res +='<td><button data-id="'+value[0]+'" data-user="'+value[1]+'" data-passwd="'+value[2]+'" class="btn btn-info btn-xs update-btn">update</button></td></tr>'
+	})
+	$('#table-display').html(res)
+})
+}
+getlist()
+
+
+
+
+adduser.find('#adduser-submit').on('click',function(){
+    var url = '/adduser?'+adduser.find('.form-inline').serialize()
+	if(adduser.find('[name="user"]').val()=='' || adduser.find('[name="passwd"]').val()==''){
+	    swal("Error", "The username and password cannot be null", "error")}
+	else{
+	$.get(url,function(res){
+	    if(res=='ok'){
+		    adduser.find('.form-inline')[0].reset()
+		    adduser.modal('hide')
+		    swal("Success", "The user has added successfully", "success")
+		    
+			getlist()}
+		else{
+		    swal("Error", "Sonething wrong has happened", "error")}
+	})}
+	return false
+})
+
+
+$(document).on('click','.delete-btn',function(){
+    var id = $(this).attr('data-id')
+    swal({title: "Are you sure?",
+	text: "Your will not be able to recover this imaginary file!",
+	type: "warning",
+	showCancelButton: true,
+	confirmButtonColor: "#DD6B55",
+	confirmButtonText: "Yes, delete it!",
+	cancelButtonText: "No, cancel plx!",
+	closeOnConfirm: false,
+	closeOnCancel: false },
+	function(isConfirm){
+	    if (isConfirm){
+	        
+			$.get('/deluser?id='+id,function(res){
+			    if(res=='ok'){
+				    swal("Deleted!", "Your imaginary file has been deleted.", "success")
+					getlist()}
+				else{
+				    swal("Error", "Something wrong has happened", "error")}})}
+		else {swal("Cancelled", "Your imaginary file is safe :)", "error")} });
+})
+
+$(document).on('click','.update-btn',function(){
+
+	var id = $(this).attr('data-id')
+	var user = $(this).attr('data-user')
+	var passwd = $(this).attr('data-passwd')
+	update.find('.alert').html(user)
+	update.attr('save',id)
+	update.find('[name="user"]').attr('placeholder',user)
+	update.find('[name="passwd"]').attr('placeholder',passwd)
+    update.modal('show')})
+	
+$(document).on('click','#update-submit',function(){
+    var id = update.attr('save')
+	var opasswd = update.find('[name="passwd"]').attr('placeholder')
+	var npasswd = update.find('[name="passwd"]').val()
+	if (npasswd==''){
+	    swal("Error", "The username and password cannot be null", "error")}
+	else{
+	    if(npasswd == opasswd){
+		    swal("Error", "The password must be new", "error")}
+		else{
+		    $.get('/update?id='+id+'&passwd='+npasswd,function(res){
+			    if(res=='ok'){				    
+				    update.modal('hide')
+					update.find('[name="passwd"]').val('')
+				    swal("Success", "The user has added successfully", "success")
+					getlist()}
+				else{
+				    swal("Error", "Something wrong has happened", "error")}})}}
+	})
+</script>
+
+
+
+{% endblock %}
+
+
+

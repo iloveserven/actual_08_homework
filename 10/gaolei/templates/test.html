@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="../static/reboot.png">
+    <title>reboot8</title>
+    <link href="../static/bootstrap.min.css" rel="stylesheet">	
+	<link href="../static/jquery-ui.min.css" rel="stylesheet">
+    <style>
+
+
+
+    #mix .ui-slider-handle {background-color:#cccccc;}
+	
+
+  </style>
+	</head>
+	
+	<body>
+	
+	<div id='output' class="container">
+	<div class="row">
+	<div id="mix" class='col-md-4'style='margin-top:12px'></div>
+	<div class='col-md-1'>
+	<input id='outputnum' class="form-control" style="color:blue" value="2G">
+	</div>
+	</div>
+	</div>
+
+	
+ 
+    
+	<script src="../static/jquery.js"></script>
+	<script src="../static/bootstrap.min.js"></script>
+	<script src="../static/jquery-ui.min.js"></script>
+	<script>	
+	function hexFromRGB(r, g, b) {
+        var hex = [
+        r.toString( 16 ),
+        g.toString( 16 ),
+        b.toString( 16 )
+        ];
+        $.each( hex, function( nr, val ) {
+            if ( val.length === 1 ) {
+                hex[ nr ] = "0" + val;
+            }
+        });
+        return hex.join( "" ).toUpperCase();
+    }
+
+    
+	function new_refresh(){
+	    var node1 = 2+30/4
+		var node2 = 2+30/2
+		var node3 = 2+30*3/4
+		var value = $('#mix').slider('value')
+		var rel = 255*4/30
+		if (value <= node1){
+		    var val = (value-2)*rel
+		    hex = hexFromRGB(0,val,255)
+			$('#outputnum').css('color','#'+hex)
+			$('#mix .ui-slider-range').css('background-color','#'+hex)
+			}
+		else if(value > node1 & value <= node2){
+		    var val = 255-((value-node1)*rel)
+			hex = hexFromRGB(0,255,val)
+			$('#outputnum').css('color','#'+hex)
+			$('#mix .ui-slider-range').css('background-color','#'+hex)
+			}
+		else if(value > node2 & value <= node3){
+		    var val = (value-node2)*rel
+			hex = hexFromRGB(val,255,0)
+			$('#outputnum').css('color','#'+hex)
+			$('#mix .ui-slider-range').css('background-color','#'+hex)
+			}
+		else{
+		    var val = 255-((value-node3)*rel)
+			hex = hexFromRGB(255,val,0)
+			$('#outputnum').css('color','#'+hex)
+			$('#mix .ui-slider-range').css('background-color','#'+hex)
+			}
+			}
+
+	$('#mix').slider({
+	    range:'min',
+		max:32,
+		min:2,
+		
+		//slide:new_refresh,
+		//change:new_refresh
+		})
+		
+	$('#mix').slider({
+	    slide:function(event,ui){
+		    $('#outputnum').val(ui.value+'G')
+			new_refresh()}})
+			
+			
+
+	  </script>
+	</body>
+</html>

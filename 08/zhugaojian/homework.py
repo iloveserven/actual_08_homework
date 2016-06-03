@@ -6,9 +6,33 @@ import mysqldb as db
 import user
 import access_log as a_log
 import time
+import json
 
 app = Flask(__name__)
 app.secret_key='asdfqwew987aakfa98&*^(asfqwer'
+
+
+@app.route('/showtable')
+def showtable():
+	if 'page_size' in session:
+		page_size = session['page_size']
+	else:
+		page_size = 10
+		session['page_size'] = page_size
+	if 'page_int' in session:
+		page_int = session['page_int']
+	else:
+		page_int = 1
+		session['page_int'] = page_int
+	cur_url = request.base_url
+	accesslist = a_log.access_log_list_by_page(page_int=page_int,page_size=page_size)
+	accesslistcount = a_log.count_access_log()
+	if accesslistcount%page_size == 0:
+		page_num = accesslistcount/page_size
+	else:
+		page_num = accesslistcount/page_size + 1
+	return json.dumps(a_log.access_log_list_by_page(page_int=page_int,page_size=page_size))
+	# return render_template('logtable.html',accesslist=accesslist,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url)
 
 
 @app.route('/')
@@ -33,6 +57,25 @@ def index():
 	else:
 		page_num = accesslistcount/page_size + 1
 	return render_template('index.html',accesslist=accesslist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url,current="loglist")
+
+
+@app.route('/index')
+def index1():
+	if not 'user' in session:
+	   return redirect('/login')
+	is_admin = session['is_admin']
+	username = session['user']
+	cur_url = request.base_url
+	if 'page_size' in session:
+		page_size = session['page_size']
+	else:
+		page_size = 10
+		session['page_size'] = page_size
+	page_int = request.args.get('page_int')
+	if not page_int:
+		page_int = 1
+	session['page_int'] = page_int
+	return render_template('index1.html',username=username,is_admin=is_admin,cur_url=cur_url,current="loglist")
 
 
 @app.route('/userlist')
@@ -60,6 +103,49 @@ def user_list():
 		page_num = userlistcount/page_size + 1
 	return render_template('userlist.html',userlist=userlist,username=username,is_admin=is_admin,page_int=int(page_int),page_num=int(page_num),page_size=int(page_size),cur_url=cur_url,current="userlist")
 
+@app.route('/userlist1')
+def user_list1():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/')
+	username = session['user']
+	if 'page_size' in session:
+		page_size = session['page_size']
+	else:
+		page_size = 10
+		session['page_size'] = page_size
+	page_int = request.args.get('page_int')
+	if not page_int:
+		page_int = 1
+	cur_url = request.base_url
+	userlist = user.userlist_by_page(page_int=page_int,page_size=page_size)
+	userlistcount = user.countuser()
+	if userlistcount%page_size == 0:
+		page_num = userlistcount/page_size
+	else:
+		page_num = userlistcount/page_size + 1
+	return render_template('userlist1.html',username=username,is_admin=is_admin,current="userlist")
+
+@app.route('/showuser')
+def showuser():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/')
+	username = session['user']
+	if 'page_size' in session:
+		page_size = session['page_size']
+	else:
+		page_size = 10
+		session['page_size'] = page_size
+	page_int = request.args.get('page_int')
+	if not page_int:
+		page_int = 1
+	cur_url = request.base_url
+	return json.dumps(user.userlist())
 
 @app.route('/adduser',methods=['post'])
 def adduser():
@@ -76,6 +162,24 @@ def adduser():
 	return redirect('/userlist')
 
 
+@app.route('/adduser1',methods=['post','get'])
+def adduser1():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/')
+	if request.method == 'POST':
+		name = request.form.get('name')
+		password = request.form.get('password')
+	else:
+		name = request.args.get('name')
+		password = request.args.get('password')
+	count = user.adduser(name, password)
+	if not count:
+		return 'error'
+	return 'ok'
+
 @app.route('/deluser',methods=['get'])
 def deluser():
 	if not 'user' in session:
@@ -88,6 +192,20 @@ def deluser():
 	if not count:
 		return 'delete user failed!'
 	return redirect('/userlist')
+
+
+@app.route('/deluser1',methods=['get'])
+def deluser1():
+	if not 'user' in session:
+		return redirect('/login')
+	is_admin = session['is_admin']
+	if not is_admin:
+		return redirect('/')
+	userid = request.args.get('userid')
+	count = user.deluser(userid)
+	if not count:
+		return 'error'
+	return 'ok'
 
 
 @app.route('/edituser',methods=['get'])
