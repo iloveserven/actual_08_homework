@@ -62,3 +62,15 @@ def access_log_list_by_page(order='access_num desc',page_int=1,page_size=10):
 	sql = "select id,ip,status,access_num from access_log_statistics order by %s"%(order)
 	res = db.select_by_page(sql,page_int,page_size)
 	return res
+
+
+def status_count():
+	sql = "select status,SUM(access_num) as num from access_log_statistics GROUP BY status"
+	res = db.select_all(sql)
+	return res
+
+
+def access_log_list_with_geo(order='access_num desc'):
+	sql = "select id,ip,status,access_num,geox,geoy from access_log_statistics where geox is not null order by %s"%(order)
+	res = db.select_all(sql)
+	return res

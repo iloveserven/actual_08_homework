@@ -8,6 +8,7 @@ import server
 import access_log as a_log
 import time
 import json
+import decimal
 from sendemail import SendMail
 
 db = mysqldb.DB()
@@ -189,6 +190,74 @@ def userinfo():
 		return redirect('/index')
 	userid = request.args.get('id')
 	return json.dumps(user.user_by_id(userid))
+
+class DecimalEncoder(json.JSONEncoder):
+	def default(self, o):
+		if isinstance(o, decimal.Decimal):
+			return float(o)
+		super(DecimalEncoder, self).default(o)
+
+@app.route('/statuscount')
+def statuscount():
+	if not 'user' in session:
+		return redirect('/login')
+	return json.dumps(a_log.status_count(),cls=DecimalEncoder)
+
+
+@app.route('/accessmap')
+def accessmap():
+	if not 'user' in session:
+		return redirect('/login')
+	res = a_log.access_log_list_with_geo()
+	d_res = {}
+	max_num = 0
+	min_num = 0
+	l_res = []
+	for r in res:
+		status = r['status']
+		ip = r['ip']
+		geox = r['geox']
+		geoy = r['geoy']
+		access_num = r['access_num']
+		if access_num > max_num:
+			max_num = access_num
+		if min_num > access_num or min_num ==0:
+			min_num = access_num
+		l_res.append({'name':ip,'value':[geox,geoy,access_num]})
+		# d_res[status]=d_res.get(status,[])+[{'name':ip,'value':[geox,geoy,access_num]}]
+		d_res = {'min':min_num,'max':max_num,'data':l_res}
+	return json.dumps(d_res)
+
+
+@app.route('/accessflymap')
+def accessflymap():
+	if not 'user' in session:
+		return redirect('/login')
+	res = a_log.access_log_list_with_geo()
+	res_r = {}
+	res_l = []
+	geos = {'200':[116.4551,40.2539],'404':[121.48,31.22],'304':[113.23,23.16]}
+	for r in res:
+		status = r['status']
+		ip = r['ip']
+		geox = float(r['geox'])
+		geoy = float(r['geoy'])
+		access_num = r['access_num']
+		if access_num < 100:
+			continue
+		else:
+			access_num /= 10
+		tmp_data0 = [{'name':status,'coord':geos[status]},{'name':ip,'coord':[geox,geoy]}]
+		tmp_data1 = [{'name':status,'coord':geos[status]},{'name':ip,'coord':[geox,geoy]}]
+		tmp_data2 = [{'name':ip,'value':[geox,geoy,access_num]}]
+		res_r[status] = res_r.get(status,{'data0':[],'data1':[],'data2':[]})
+		res_r[status]['data0'].append(tmp_data0)
+		res_r[status]['data1'].append(tmp_data1)
+		res_r[status]['data2'] += tmp_data2
+	for k,v in res_r.items():
+		res_l.append([k,v])
+	return json.dumps(res_l)
+
 
 @app.route('/adduser',methods=['post'])
 def adduser():
