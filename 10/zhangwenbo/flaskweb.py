@@ -45,7 +45,44 @@ def list():
         ip_list = dbutil.execute(sql)
         return render_template('ip_list.html',ip_list=ip_list)
 
- 
+@app.route('/logecharts')
+def logecharts():
+        return render_template('echarts.html')
+
+@app.route('/loghttp')
+def loghttp():
+        sql = 'select * from log'
+        ip_data = dbutil.execute(sql)
+        log_pre = {}
+        for log in ip_data:
+            log_pre[log[2]] = log_pre.get(log[2],0)+log[3]
+        res = {'legend':[],'data':[]}
+        for status,count in log_pre.items():
+            status = str(status)
+            res['legend'].append(status)
+            res['data'].append({'name':status,'value':count})
+        return json.dumps(res)
+
+@app.route('/log_map')
+def log_map():
+        return render_template('log_map.html')
+
+@app.route('/logmap')
+def logmap():
+        sql = 'select * from log_map'
+        sql1 = 'select max(count),min(count) from log_map'
+        ip_data = dbutil.execute(sql)
+        mm = dbutil.execute(sql1)
+        res = {'data':[],'ma':[],'mi':[]}
+        for mp in ip_data:
+            res['data'].append({'name':mp[0],'value':[mp[2],mp[3],mp[4]]})
+        for mx in mm:
+            res['ma']= mx[0]
+            res['mi']= mx[1]
+        return json.dumps(res)
+
+
+
 @app.route('/loginaction',methods=['post']) 
 def loginaction(): 
         user = request.form.get('user') 

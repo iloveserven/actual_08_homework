@@ -128,6 +128,7 @@ $('#addusermyModal').find('.btn-primary').on('click',function(){
    // var url = '/adduser?'+$('#addform').serialize()
     var us = $('#addform').find('[name="user"]').val()
     var ps = $('#addform').find('[name="password"]').val()
+
     $.post('/adduser',{
     	user:us,
     	password:ps
@@ -161,6 +162,7 @@ $.getJSON('/gettable',function(res){
 
 $(document).on('click','.delete-btn',function(){
    var id = $(this).attr('data-id')
+
    swal({
   title: "Are you sure?",
   text: "You will not be able to recover this imaginary file!",
