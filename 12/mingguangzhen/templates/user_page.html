@@ -1,0 +1,182 @@
+{% extends "layout_page.html" %}
+
+{% block data_info %}
+
+<h2 class="sub-header animated bounceIn">用户管理清单</h2>
+
+<div id="adduserModal" class="modal fade">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">新建用户</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline animated bounceInLeft" id="userform" action='/add_user' method='POST'>
+          <div class="form-group">
+            <label for="inputuser">用户</label>
+            <input type="text" name="user" class="form-control" id="inputuser" placeholder="UserName">
+          </div>
+          <div class="form-group">
+            <label for="inputpwd">密码</label>
+            <input type="password" name="pwd" class="form-control" id="inputpwd" placeholder="Password">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary addBtn">保存并添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#adduserModal">添加用户</button>
+
+
+<div id="updateuserModal" class="modal fade">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">密码重置</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/update_user" class="form-inline animated bounceInLeft" id="updatepwdform" action='/add_user' method='POST'>
+          <div class="form-group">
+            <label for="InputName">旧密码</label>
+            <input type="text" name="oldpwd" class="form-control" placeholder="new password">
+            <label for="InputName">新密码</label>
+            <input type="text" name="newpwd" class="form-control" placeholder="new password">
+            <label for="InputName">请确认</label>
+            <input type="text" name="renewpwd" class="form-control" placeholder="new password again">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary reBtn">确定修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table style="margin-top:20px;" class="table table-bordered table-striped animated bounceInUp">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户</th>
+      <th>密码</th>
+      <th>操作</th>
+      <th>密码重置</th>
+    </tr>
+  </thead>
+  <tbody id="tbody-content">
+  </tbody>
+</table>
+
+<script>
+$('#adduserModal').find('.addBtn').on('click', function() {
+  // var url = '/add_user?' + $('#userform').serialize()
+  // console.log(url)
+  // $.get(url, function(res) {
+  var user = $('#inputuser').val()
+  var pwd = $('#inputpwd').val()
+  console.log(user)
+  console.log(pwd)
+  $.post('/add_user', {user:user, pwd:pwd}, function(res){
+    if (res == 'ok') {
+      $('#userform')[0].reset()
+      $('#adduserModal').modal('hide')
+      swal({
+        title: "666",
+        text: "恭喜恭喜，添加用户成功",
+        imageUrl: "/static/sweetalert/example/images/thumbs-up.jpg"
+      })
+
+      getlist()
+    } else {
+      swal("用户添加失败", "用户名不能为空哦~", "error")
+      getlist()
+    }
+  })
+  return false
+})
+
+function getlist() {
+  var res = ''
+  $.getJSON('/uinfo', function(res) {
+    $.each(res, function(index, value) {
+      res += '<tr><td>' + (index + 1) + '</td>'
+      res += '<td>' + value[1] + '</td>'
+      res += '<td>' + value[2] + '</td>'
+      res += '<td><button data-id="' + value[0] + '" class="btn btn-danger btn-xs delete-btn">删除</button></td>'
+      res += '<td><button type="submit" data-id="' + value[0] + '" style="margin-left:10px;" class="btn btn-warning btn-xs reset-btn" data-toggle="modal" data-target="#updateuserModal">重置</button></td></tr>'
+    })
+    $('#tbody-content').html(res)
+  })
+}
+getlist()
+
+
+$(document).on('click', '.delete-btn', function() {
+  var id = $(this).attr('data-id')
+
+  swal({
+      title: "确定删除吗？",
+      text: "删除后你将永远会失去Ta",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确定",
+      closeOnConfirm: false
+    },
+    function() {
+      // $.get('/del_user?id=' + id, function(res) {
+      $.post('/del_user', {id:id}, function(res){
+        if (res == 'ok') {
+          swal('删除成功')
+          getlist()
+        } else if (res == 'error') {
+          swal('删除失败')
+          getlist()
+        }
+      })
+    })
+  return false
+})
+</script>
+<script>
+  $(document).on('click', '.reset-btn', function() {
+    var user_id = $(this).data('id')
+    $('#updateuserModal').attr('data-userid', user_id).modal('show')
+  })
+  $('#updateuserModal').find('.reBtn').on('click', function() {
+    var oldpwd = $('#updatepwdform').find('[name="oldpwd"]').val()
+    var newpwd = $('#updatepwdform').find('[name="newpwd"]').val()
+    var renewpwd = $('#updatepwdform').find('[name="renewpwd"]').val()
+    var userid = $('#updateuserModal').attr('data-userid')
+    // console.log('/update_user?id=' + userid + '&uppwd=' + newpwd)
+    // $.get('/update_user?id=' + userid + '&uppwd=' + newpwd, function(res) {
+    $.post('update_user', {id:userid, uppwd:newpwd}, function(res){
+      if (res == 'ok') {
+        swal('密码修改成功')
+        $('#updatepwdform')[0].reset()
+        $('#updateuserModal').modal('hide')
+        getlist()
+      } else if (res == 'error') {
+        swal('密码修改失败')
+        getlist()
+      }
+    })
+    return false
+  })
+
+     // $('#left-top').find('[data-tag="user"]').on('click', function(){
+     //    $(this).addClass('active')
+     //    // $('left-top').find('[data-tag="log"]').toggleClass('active')
+     //    // $('left-top').find('[data-tag="res"]').toggleClass('active')
+     //  })
+</script>
+
+{% endblock %}
