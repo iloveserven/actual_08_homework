@@ -1,9 +1,0 @@
-reboot:woniu
-root:1qaz2WSX
-admin:admin123
-mysql:mysql
-
-yuting:12345678
-xiaoming:1qaz2wsx
-
-11111:22222

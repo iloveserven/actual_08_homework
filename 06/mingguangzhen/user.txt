@@ -1,4 +1,0 @@
-
-admin:admin
-aaron:aaron
-boss:boss
