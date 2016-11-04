@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <div>欢迎{{user}} <a href="/logout">退出</a></div>
+    {% if user == 'admin' %}
+        <a href="/">用户列表</a>
+    {% endif %}
+        <a href="/log">日志展示</a>
+</body>
+</html>

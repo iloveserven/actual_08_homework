@@ -1,0 +1,141 @@
+{% extends "layout_page.html" %}
+
+{% block script %}
+    <script src="/static/js/echarts.min.js"></script>
+    <script src="/static/js/china.js"></script>
+{% endblock %}
+
+{% block data_info %}
+<div id="main" class="dstyle container container-fluid" style=""></div>
+<!-- margin-top:50px -->
+<script>
+    
+
+$.getJSON('/httpscatter', function(res){
+    var chart = echarts.init(document.getElementById('main'));
+    var option = {
+        backgroundColor: '#404a59',
+        // backgroundColor: 'white',
+        title: {
+            text: 'IP访问数量',
+            subtext: 'data from Nginx',
+            sublink: 'http://www.xxxx.com',
+            left: 'center',
+            textStyle: {
+                color: 'black'
+            },
+            subtextStyle: {
+                color: 'black'
+            }
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: function (params) {
+            return params.name + ' : ' + params.value[2];
+            }
+        },
+        legend: {
+            orient: 'vertical',
+            y: 'bottom',
+            x:'right',
+            data:['全国ip访问','区域ip访问'],
+            textStyle: {
+                color: 'black'
+            }
+        },
+
+        dataRange: {
+            min: res.min_val,
+            max: res.max_val,
+            calculable: true,
+            color: ['#d94e5d','#eac736','#50a3ba'],
+            textStyle: {
+                color: '#fff'
+            }
+        },  
+        geo: {
+            map: 'china',
+            label: {
+                emphasis: {
+                    show: false
+                }
+            },
+            roam: true,
+            itemStyle: {
+                normal: {
+                    areaColor: '#323c48',
+                    borderColor: 'blue'
+                },
+                emphasis: {
+                    areaColor: '#2a333d'
+                }
+            }
+        },
+        series : [
+            {
+                name: '全国ip访问',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+
+                data: res.data,
+
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    emphasis: {
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'red'
+                    }
+                }
+            },
+            {
+                name: '区域ip访问',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+
+                data: [{"name": "2.2.2.2", "value": ["123.43279092", "41.10861100", "300"]},
+                       {"name": "1.1.1.1", "value": ["105.07235586", "29.59946153", "800"]},
+                       {"name": "3.3.3.3", "value": ["104.57124090", "36.54668171", "400"]},
+                       {"name": "4.4.4.4", "value": ["103.61524918", "35.29851435", "900"]},
+                       {"name": "5.5.5.5", "value": ["106.13063501", "29.04460611", "200"]}
+                      ],
+
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    emphasis: {
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'green'
+                    }
+                }
+            }
+
+        ]
+    };
+
+
+chart.setOption(option, {
+    series: [{
+        type: 'map',
+        map: 'china'
+    }]
+});
+
+})
+</script>
+
+{% endblock %}

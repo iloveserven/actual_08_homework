@@ -1,0 +1,277 @@
+{%extends "layout.html"%}
+
+{%block title%}
+machine-View
+{%endblock%}
+
+
+{% block  body%}
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addHostModal">
+添加主机
+</button>
+
+<table  class="table table-bordered"  > 
+       <thead>
+       	   <tr  class="warning">
+                 <th>Hostid</th>
+                  <th>Hostname</th>
+                  <th>Hostsize(G)</th>
+                  <th>HostDate</th> 
+                  <th>Email</th>  
+                  <th>Delete</th> 
+                  <th>Edit</th>
+
+                </tr>
+       </thead>
+
+<tbody  id='table-content'>
+
+
+
+</tbody>
+</table>
+
+<div class="modal fade" id="addHostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加主机</h4>
+      </div>
+      <div class="modal-body">
+                 
+           <form action='/addHost' id='addhost' method="post">
+            <div>
+          <h4>主机名称<input  type="text" name="Hostname" class="form-control"></h4>
+          </div>
+
+                  
+<p>
+  <label for="amount">内存大小：</label>
+  <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" name="Hostsize">
+</p>
+ <div id="slider-range-min"></div>
+
+
+            <div>
+            <label>过期日期：</label>
+          
+           <input type="text" id="datepicker" name="HostDate"  class="form-control" >
+
+            </div>
+
+            <div>
+            <h4> 管理员邮箱<input  type="text" name="Email" class="form-control"></h4>
+            </div>
+          </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" >添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="updateHostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">更新主机</h4>
+      </div>
+      <div class="modal-body">
+                 
+           <form action='/updateHost' id="updateform"  method="post">
+                <div>
+          <h4>主机名称<input  type="text" name="Hostname" class="form-control"></h4>
+          </div>
+                  
+<p>
+  <label for="amount">内存大小：</label>
+  <input type="text" id="update-amount" style="border:0; color:#f6931f; font-weight:bold;" name="Hostsize">
+</p>
+ <div id="update-slider-range-min"></div>
+
+
+            <div>
+            <label>过期日期：</label>
+          
+           <input type="text" id="update-datepicker" name="HostDate"  class="form-control" >
+
+            </div>
+
+            <div>
+            <h4> 管理员邮箱<input  type="text" name="Email" class="form-control"></h4>
+            </div>
+            </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" >修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock%}
+
+
+{%block js %}
+
+<script >
+ $(function() {
+    $( "#slider-range-min" ).slider({
+      range: "min",
+      value: 37,
+      min: 2,
+      max: 32,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( ui.value +"G");
+      }
+    });
+    $( "#amount" ).val( $( "#slider-range-min" ).slider( "value" )+"G " );
+  });
+
+$(function(){
+  $("#datepicker").datepicker({
+    dateFormat:"yy-mm-dd"
+  });
+});
+
+ $(function() {
+    $( "#update-slider-range-min" ).slider({
+      range: "min",
+      value: 37,
+      min: 2,
+      max: 32,
+      slide: function( event, ui ) {
+        $( "#update-amount" ).val( ui.value +"G");
+      }
+    });
+    $( "#update-amount" ).val( $( "#update-slider-range-min" ).slider( "value" )+"G " );
+  });
+
+
+$(function(){
+  $("#update-datepicker").datepicker({
+    dateFormat:"yy-mm-dd"
+  });
+});
+
+$("#updateHostModal").find('.btn-primary').on('click',function(){
+  var Hostid= $('#updateHostModal').attr('data-id')
+  var Hostname=$("#updateform").find('[name="Hostname"]').val()
+  var Hostsize=$("#updateform").find('[name="Hostsize"]').val()
+  var HostDate=$("#updateform").find('[name="HostDate"]').val()
+  var Email=$("#updateform").find('[name="Email"]').val()
+
+$.post('/updateHost',{Hostid:Hostid,Hostname:Hostname,Hostsize:Hostsize,HostDate:HostDate,Email:Email},function(res){
+  // $.get('/updateHost?Hostid='+Hostid+'&Hostname='+Hostname+'&Hostsize='+Hostsize+'&HostDate='+HostDate+'&Email='+Email,function(res){
+    if (res=='ok'){
+      $('#updateHostModal').modal('hide')
+      swal('success','update success','success')
+      getlist()
+    }else{
+      swal('error','error happened','error')
+    }
+  })
+})
+
+$(document).on('click','.update-btn',function(){
+       
+          var Hostname=$(this).attr('Hostname')
+          var  Hostsize=$(this).attr('Hostsize')
+          var HostDate=$(this).attr('HostDate')
+          var Email=$(this).attr('Email')
+          var Hostid=$(this).data('id')
+        
+             $("#updateHostModal").attr('data-id',Hostid).modal('show')
+             $('#updateform').find('[name="Hostname"]').val(Hostname)
+              $('#updateform').find('[name="Hostsize"]').val(Hostsize)
+              $('#updateform').find('[name="HostDate"]').val(HostDate)
+              $('#updateform').find('[name="Email"]').val(Email)
+
+})
+
+
+
+
+function getlist(){
+var res=' '
+	$.getJSON('/gethostlist',function(res){
+	$.each(res,function(index,value){
+		console.log(value)
+		res+='<tr><td>'+value[0]+'</td>'
+		res+='<td>'+value[1]+'</td>'
+		res+='<td>'+value[2]+'</td>'
+              res+='<td>'+value[3]+'</td>'
+              res+='<td>'+value[4]+'</td>'
+              res+='<td><button data-id="'+value[0]+'" class="btn btn-danger btn-xs delete-btn">delete</button></td>'
+              res+='<td><button  data-Hostname=" '+value[1]+'" data-Hostsize=" '+value[2]+'" data-HostDate="'+value[3]+'"data-Email="'+value[4]+'" data-id="'+value[0]+'" class="btn btn-danger btn-xs update-btn">Update</button></td></tr>'
+
+
+                   
+	})
+	$('#table-content').html(res)
+})
+}
+
+$('#addHostModal').find('.btn-primary').on('click', function (event) {
+ 
+    $.post('/addHost' ,$('#addhost').serialize(), function(res){
+
+      if (res=='ok'){
+        $('#addHostModal').modal('hide')
+        swal('success','add  success','success')
+        $('#addhost')[0].reset()
+        getlist()
+      }else{
+    
+        swal('error','error happened','error')
+      }
+    })
+    return false
+})
+
+
+$(document).on('click','.delete-btn',function(){
+   var id = $(this).attr('data-id')
+
+swal({
+      title: "Are you sure to delete host?",
+      text: "axxx delete",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "confirm",
+      closeOnConfirm: false,
+      html: false
+}, function(){
+
+        $.post('/delHost',{id:id},function(res){
+            if(res=='ok'){
+                swal('success','delete success','success')
+                getlist()
+            }
+        })
+    })    
+})
+
+
+
+ getlist()
+
+
+
+</script>
+
+
+
+
+{%endblock%}

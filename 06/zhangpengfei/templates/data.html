@@ -1,0 +1,18 @@
+
+
+<form action="deluser" method="post">
+{% for user in userlist %}
+    <input type="radio" name="user" value="{{ user[0] }}:{{ user[1].replace('\n','') }}" />
+    {{ user[0] }}  {{ user[1] }}
+    <br />
+{% endfor %}
+    <input type="submit" value="deluser">
+</form>
+
+<form action="adduser" method="post">
+    <input type="text" name="user">
+    <input type="text" name="password">
+    <input type="submit" value="adduser">
+</form>
+
+<a href="logout">Logout</a>

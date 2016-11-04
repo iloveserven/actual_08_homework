@@ -1,0 +1,281 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Host
+{% endblock %}
+
+{% block sidebar %}
+ <li><a href="/user">用户</a></li>
+ <li><a href="/url">日志</a></li>
+ <li class="active"><a href="#">主机</a></li>
+ {% endblock %}
+ 
+ 
+{% block body %}
+<button type="button" class="btn btn-primary " id="modal-button">
+  Addhost
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addhost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog modal-sm " role="document">
+<div class="container">
+<div class="row col-xs-4">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Addhost</h4>
+    </div>
+    <div class="modal-body">
+	    <div id='output'>		
+        <span>主机名</span>
+		<input type='text' name='hostname' class="form-control" placeholder="Hostmane">
+		<span>内存大小</span>
+	    <div id="mix"></div>
+	    <input name="memory" class="form-control" id="outputnum" style="color:blue" value="2">	    
+	    日期
+		<input type="text" name="date" class="form-control">
+		邮箱
+		<input type='text' name='email' class="form-control" placeholder="Email">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+        <button type="button" class="btn btn-primary" id="addhost-submit">Addhost</button>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="update-host" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" save="">
+<div class="modal-dialog " role="document">
+<div class="container">
+<div class="row col-xs-4">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Updatehost</h4>
+    </div>
+    <div class="modal-body">
+	    <div id='output'>		
+        <span>主机名</span>
+		<input type='text' name='hostname' class="form-control" placeholder="Hostmane">
+		<span>内存大小</span>
+	    <div id="mix"></div>
+	    <input name="memory" class="form-control"id="outputnum" style="color:blue" value="">	    
+	    日期
+		<input type="text" name="date" class="form-control">
+		邮箱
+		<input type='text' name='email' class="form-control" placeholder="Email">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+        <button type="button" class="btn btn-primary" id="updatehost-submit">Updatehost</button>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<table class="table table-striped" style="margin-bottom:0;margin-top:15px">
+<thead>
+<tr>
+<th>#</th>
+<th>hostname</th>
+<th>memory(G)</th>
+<th>date</th>
+<th>email</th>
+<th>delete</th>
+<th>update</th>
+</tr>
+</thead>
+<tbody id='table-display'>
+
+</tbody>
+
+{% endblock %}
+
+{% block js %}
+<script>
+var addhost = $('#addhost')
+var updatehost = $('#update-host')
+function getlist(){
+    res = ''
+	$.getJSON('/gethost',function(res){
+	    $.each(res,function(index,value){
+		    res += '<tr><td>'+value[0]+'</td><td>'+value[1]+'</td><td>'+value[2]+'</td><td>'+value[3]+'</td><td>'+value[4]+'</td>'
+			res += '<td><button class="btn btn-danger btn-xs del-host" data-id="'+value[0]+'">delete</button></td>'
+			res += '<td><button class="btn btn-info btn-xs update-host" data-id="'+value[0]+'" data-name="'+value[1]+'" data-mem="'+value[2]+'" data-date="'+value[3]+'"data-email="'+value[4]+'">update</button></td></tr>'
+			$('#table-display').html(res)})})}
+getlist()
+function hexFromRGB(r, g, b) {
+        var hex = [
+        r.toString( 16 ),
+        g.toString( 16 ),
+        b.toString( 16 )
+        ];
+        $.each( hex, function( nr, val ) {
+            if ( val.length === 1 ) {
+                hex[ nr ] = "0" + val;
+            }
+        });
+        return hex.join( "" ).toUpperCase();
+    }    
+function new_refresh(value,outnum,sliderange){
+	var node1 = 2+30/4
+    var node2 = 2+30/2
+	var node3 = 2+30*3/4
+	//var value = $('#mix').slider('value')
+	var rel = 255*4/30
+	if (value <= node1){
+		var val = (value-2)*rel
+		hex = hexFromRGB(0,val,255)
+		//$('#outputnum').css('color','#'+hex)
+		//$('#mix .ui-slider-range').css('background-color','#'+hex)
+		outnum.css('color','#'+hex)
+		sliderange.css('background-color','#'+hex)
+		}
+	else if(value > node1 & value <= node2){
+		var val = 255-((value-node1)*rel)
+	    hex = hexFromRGB(0,255,val)
+		//$('#outputnum').css('color','#'+hex)
+		//$('#mix .ui-slider-range').css('background-color','#'+hex)
+		outnum.css('color','#'+hex)
+		sliderange.css('background-color','#'+hex)
+		}
+	else if(value > node2 & value <= node3){
+		var val = (value-node2)*rel
+		hex = hexFromRGB(val,255,0)
+		//$('#outputnum').css('color','#'+hex)
+		//$('#mix .ui-slider-range').css('background-color','#'+hex)
+		outnum.css('color','#'+hex)
+		sliderange.css('background-color','#'+hex)
+		}
+	else{
+		var val = 255-((value-node3)*rel)
+		hex = hexFromRGB(255,val,0)
+		//$('#outputnum').css('color','#'+hex)
+		//$('#mix .ui-slider-range').css('background-color','#'+hex)
+		outnum.css('color','#'+hex)
+		sliderange.css('background-color','#'+hex)
+		}
+		}
+
+
+addhost.find('#mix').slider({
+	range:'min',
+	max:32,
+	min:2,
+	value:2	
+	//slide:new_refresh,
+	//change:new_refresh
+	},
+	new_refresh(2,addhost.find('#outputnum'),addhost.find('#mix .ui-slider-range'))
+	)	
+
+addhost.find('#mix').slider({
+	slide:function(event,ui){
+	addhost.find('#outputnum').val(ui.value)
+	new_refresh(ui.value,addhost.find('#outputnum'),addhost.find('#mix .ui-slider-range'))}
+
+	})
+
+
+addhost.find('[name="date"]').datepicker({dateFormat: "yy-mm-dd"})
+updatehost.find('[name="date"]').datepicker({dateFormat: "yy-mm-dd"})
+
+$('#modal-button').on('click',function(){
+    addhost.modal('show')
+
+	})
+
+addhost.find('#addhost-submit').on('click',function(){
+    var host = addhost.find('[name="hostname"]').val()
+	var mem = addhost.find('[name="memory"]').val()
+	var date = addhost.find('[name="date"]').val()
+	var email = addhost.find('[name="email"]').val()
+	$.get('/addhost?host='+host+'&mem='+mem+'&date='+date+'&email='+email,function(res){
+	    if(res=='ok'){
+		    swal("Success", "The user has added successfully", "success")
+			addhost.find('[name="hostname"]').val('')
+			addhost.find('[name="memory"]').val(2)
+			addhost.find('[name="date"]').val('')
+			email = addhost.find('[name="email"]').val('')
+			addhost.find('#mix').slider('value',2)
+			new_refresh(2,addhost.find('#outputnum'),addhost.find('#mix .ui-slider-range'))
+			getlist()
+			addhost.modal('hide')}
+		else{
+		    swal("Error", "Sonething wrong has happened", "error")}})})
+
+$(document).on('click','.update-host',function(){
+    var id = $(this).attr('data-id')
+    var host = $(this).attr('data-name')
+	var mem = $(this).attr('data-mem')
+	var date = $(this).attr('data-date')
+	var email = $(this).attr('data-email')
+	updatehost.attr('save',id)
+	updatehost.find('[name="hostname"]').val(host)
+	updatehost.find('[name="memory"]').val(mem)
+	updatehost.find('[name="date"]').val(date)
+	updatehost.find('[name="email"]').val(email)
+	updatehost.find('#mix').slider({
+	    	range:'min',
+	        max:32,
+	        min:2,
+			value:mem,
+			})
+	updatehost.find('#outputnum').val(mem)
+    new_refresh(mem,updatehost.find('#outputnum'),updatehost.find('#mix .ui-slider-range'))
+	updatehost.find('#mix').on('slide',function(event,ui){
+	    updatehost.find('#outputnum').val(ui.value)
+		new_refresh(ui.value,updatehost.find('#outputnum'),updatehost.find('#mix .ui-slider-range'))
+		})
+	updatehost.find('[name="date"]').datepicker('setDate',date)
+	updatehost.modal('show')})
+updatehost.find('#updatehost-submit').on('click',function(){
+    var id = updatehost.attr('save')
+    var host = updatehost.find('[name="hostname"]').val()
+	var mem = updatehost.find('[name="memory"]').val()
+	var date = updatehost.find('[name="date"]').val()
+	var email = updatehost.find('[name="email"]').val()
+	$.get('/updatehost?id='+id+'&host='+host+'&mem='+mem+'&date='+date+'&email='+email,function(res){
+	    if(res=='ok'){
+		    swal("Success", "The user has added successfully", "success")
+			
+			getlist()
+			updatehost.modal('hide')}
+		else{
+		    swal("Error", "Sonething wrong has happened", "error")}})})
+$(document).on('click','.del-host',function(){
+    var id = $(this).attr('data-id')
+	swal({title: "Are you sure?",
+	text: "Your will not be able to recover this imaginary file!",
+	type: "warning",
+	showCancelButton: true,
+	confirmButtonColor: "#DD6B55",
+	confirmButtonText: "Yes, delete it!",
+	cancelButtonText: "No, cancel plx!",
+	closeOnConfirm: false,
+	closeOnCancel: false },
+	function(isConfirm){
+	    if (isConfirm){
+	        
+			$.get('/delhost?id='+id,function(res){
+			    if(res=='ok'){
+				    swal("Deleted!", "Your imaginary file has been deleted.", "success")
+					getlist()}
+				else{
+				    swal("Error", "Something wrong has happened", "error")}})}
+		else {swal("Cancelled", "Your imaginary file is safe :)", "error")} });
+	})
+
+</script>
+{% endblock%}

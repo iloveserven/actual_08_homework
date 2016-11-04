@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+        {% block content_top %}
+        {% if is_admin %}
+
+          <div class="row placeholders">
+            <div class="col-xs-2 col-sm-2 col-xs-offset-10 col-sm-offset-10 placeholder">
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加服务器</button>
+            </div>
+          </div>
+
+          
+
+
+            {% endif %}
+          {% endblock %}
+          {% block content %}
+          <style type="text/css">
+            #slider{
+              margin-top: 8px ;
+              margin-left: 10px 
+            }
+            #editslider{
+              margin-top: 8px ;
+              margin-left: 10px 
+            }
+          </style>
+          <h2 class="sub-header">服务器管理</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>名称</th>
+                  <th>内存</th>
+                  <th>过期时间</th>
+                  <th>负责人邮箱</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="serverlist">
+
+              </tbody>
+            </table>
+          </div>
+
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">添加服务器</h4>
+                </div>
+                <div class="modal-body">
+                  <form class="form-horizontal" id="addserverform" action="/addserver" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">名称：</div>
+                        <input type="text" class="form-control" name="name" placeholder="请输入服务器名称">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">内存：</div>&nbsp;&nbsp;
+                        <div id="slider" class="col-md-10"></div><span id='slider_value'></span>G
+                        <input type="hidden" class="form-control" name="memory" value="2">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">过期时间：</div>
+                        <input type="text" id="datepicker" name="expired_date">
+                        {# <input type="text" class="form-control" name="expired_date" placeholder="请输入过期时间"> #}
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">负责人邮箱：</div>
+                        <input type="text" class="form-control" name="email" placeholder="请输入负责人邮箱">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">备注：</div>
+                        <input type="text" class="form-control" name="note" placeholder="请输入备注">
+                    </div>
+                </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="addserver" class="btn btn-primary">添加</button>
+                  <button type="button" id="resetserver" class="btn btn-primary">重置</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="updateserverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                  <form class="form-horizontal" id="updateserverform" action="/editserveraction" method="post">
+                    <input type="hidden" name="serverid" class="serverid-input" value="">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">名称：</div>
+                        <input type="text" class="form-control name-input"  name="name">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">内存：</div>&nbsp;&nbsp;
+                        <div id="editslider" class="col-md-10"></div><span id='editslider_value'></span>G
+                        {# <input type="hidden" class="form-control" name="memory" value="2"> #}
+                        {# <input type="text" class="form-control memory-input" name="memory" > #}
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">过期时间：</div>
+                        <input type="text" id="editdatepicker" name="expired_date" class="expired_date-input">
+                        {# <input type="text" class="form-control expired_date-input" name="expired_date" > #}
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">负责人邮箱：</div>
+                        <input type="text" class="form-control email-input" name="email" >
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">备注：</div>
+                        <input type="text" class="form-control note-input" name="note" >
+                    </div>
+                </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary update-btn">修改</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script type="text/javascript">
+          function showserverdata(){
+            var result = ''
+            $.getJSON('/showserver',function(res){
+                $.each(res,function(index,value){
+                    seq = index+1
+                        result += '<tr><td>'+seq+'</td><td>'+value['name']+'</td><td>'+value['memory']+'</td><td>'+value['expired_date']+'</td><td>'+value['email']+'</td><td>'+value['note']+'</td>'
+                        result += '<td><button data-id='+value['id']+' data-name='+value['name']+' data-memory='+value['memory']+' data-expired_date='+value['expired_date']+' data-email='+value['email']+' data-note='+value['note']+' class="btn btn-info btn-xs update-btn">修改</button>'
+                        result += '&nbsp;&nbsp;&nbsp;&nbsp;<button data-id='+value['id']+' class="btn btn-danger btn-xs delete-btn">删除</button></td></tr>'
+                })
+                $('#serverlist').html(result)
+            })
+          }
+          showserverdata()
+          $("#slider").slider({
+            min:2,
+            max:32,
+            value:2
+          });
+          // $("#slider").slider( "option", "value", 2 );
+          value = $("#slider" ).slider( "option", "value" );
+          $('#slider_value').html(value)
+          $("#slider").on( "slide", function(event, ui) {
+            $('#slider_value').html(ui.value)
+            // console.log(ui.value)
+          } );
+          $( "#datepicker" ).datepicker({
+            dateFormat: "yy-mm-dd"
+          });
+          $('#addserver').on('click',function(){
+            if($('#addserverform').find('[name="name"]').val()=='' || $('#addserverform').find('[name="memory"]').val()=='' || $('#addserverform').find('[name="expired_date"]').val()=='' || $('#addserverform').find('[name="email"]').val()=='')
+            {
+              swal("添加失败!", "名称，内存，过期时间和负责人邮箱不能为空!", "error")
+              return false
+            }
+            value = $("#slider" ).slider( "option", "value" );
+            $('#addserverform').find('[name="memory"]').val(value);
+            $.post('/addserver',$('#addserverform').serialize(),function(res){
+                if (res == 'error')
+                {
+                    // alert("添加失败")
+                    swal("添加失败!", "重新检查一下输入是否有误", "error")
+                }
+                else{
+                    // alert("添加成功")
+                    swal("添加成功!", "棒棒哒", "success")
+                    $('#myModal').modal('hide')
+                    showserverdata()
+                    $('#addserverform')[0].reset()
+                }
+            })
+
+            return false
+          })
+          $('#resetserver').on('click',function(){
+            $('#addserverform')[0].reset()
+          })
+
+          
+
+          $(document).on('click','.update-btn',function(){
+            var id = $(this).data('id')
+            var name = $(this).data('name')
+            var memory = $(this).data('memory')
+            var expired_date = $(this).data('expired_date')
+            var email = $(this).data('email')
+            var note = $(this).data('note')
+            // alert(name)
+            $('#updateserverModal').find('.serverid-input').val(id)
+            $('#updateserverModal').find('.name-input').val(name)
+            $('#updateserverModal').find('.memory-input').val(memory)
+            $('#updateserverModal').find('.expired_date-input').val(expired_date)
+            $('#updateserverModal').find('.email-input').val(email)
+            $('#updateserverModal').find('.note-input').val(note)
+
+            $("#editslider").slider({
+              min:2,
+              max:32
+            });
+            $("#editslider").slider( "option", "value", memory );
+            // value = $("#editslider" ).slider( "option", "value" );
+            $('#editslider_value').html(memory)
+            $("#editslider").on( "slide", function(event, ui) {
+              $('#editslider_value').html(ui.value)
+              // console.log(ui.value)
+            } );
+
+            $( "#editdatepicker" ).datepicker({
+              dateFormat: "yy-mm-dd"
+            });
+            $( "#editdatepicker" ).datepicker( "setDate", expired_date );
+
+            $('#updateserverModal').modal('show')
+
+          })
+
+          $('#updateserverModal').find('.update-btn').on('click',function(){
+            if($('#updateserverModal').find('.name-input').val()=='' || $('#updateserverModal').find('.memory-input').val()=='' || $('#updateserverModal').find('.expired_date-input').val()=='' || $('#updateserverModal').find('.email-input').val()=='')
+            {
+              swal("修改失败!", "名称，内存，过期时间和负责人邮箱不能为空!", "error")
+              return false
+            }
+            id = $('#updateserverModal').find('.serverid-input').val()
+            name = $('#updateserverModal').find('.name-input').val()
+            // memory = $('#updateserverModal').find('.memory-input').val()
+            memory = $("#editslider" ).slider( "option", "value" );
+            expired_date = $('#updateserverModal').find('.expired_date-input').val()
+            email = $('#updateserverModal').find('.email-input').val()
+            note = $('#updateserverModal').find('.note-input').val()
+            $.post('/editserveraction',{'serverid':id,'name':name,'memory':memory,'expired_date':expired_date,'email':email,'note':note},function(res){
+                if (res == 'error')
+                {
+                    // alert("添加失败")
+                    swal("修改失败!", "重新检查一下输入是否有误", "error")
+                }
+                else{
+                    // alert("添加成功")
+                    swal("修改成功!", "棒棒哒", "success")
+                    $('#updateserverModal').modal('hide')
+                    showserverdata()
+                }
+            })
+
+            return false
+          })
+
+          $(document).on('click','.delete-btn',function(){
+            var id = $(this).attr('data-id')
+            swal({
+                title: "确定要删除吗？",
+                text: "删除之后将无法恢复!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定删除",
+                cancelButtonText: "取消删除",
+                closeOnConfirm: false,
+                html: false
+              }, function(){
+                $.post('/delserver',{'serverid':id},function(res){
+                    if(res=='ok'){
+                        swal("删除成功!","Your imaginary file has been deleted.","success");
+                        showserverdata()
+                    }
+                    else{
+                        swal("删除失败","Your imaginary file has been deleted.","error");
+                    }
+                })
+                
+              });
+          })
+          </script>
+          {% endblock %}

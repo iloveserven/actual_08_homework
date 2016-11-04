@@ -1,0 +1,22 @@
+<form action='add' method='post'>
+	用户名:<input type='text' name='user'>
+	密码:<input type='text' name='passwd'>
+	<input type='submit' value='提交'>
+	<input type='reset' value='reset'>
+	<a href='/logout'>
+	<input type='button' value='退出'>
+	</a>
+</form>
+</td>
+<form action='delete' method='post'>
+<table border='5'>
+{% for i in user_web_list %}
+<tr>
+<td><input type='radio' name='radio' value={{i[0]}} checked></td>
+<td>{{i[0]}}</td>
+<td>{{i[1]}}</td>
+</tr>
+{% endfor %}
+</table>
+<input type='submit' value='删除'>
+</form>

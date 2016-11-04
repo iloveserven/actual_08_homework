@@ -1,0 +1,24 @@
+
+<body>
+<table border='1'>
+	<thead>
+		<tr>
+			<td>ID</td>
+			<td>IP</td>
+			<td>STATUS</td>
+			<td>TIMES</td>
+		</tr>
+	<thead>
+	<tbody>
+	{% for data in datalist %}
+		<tr>
+			<td>{{data['id']}}</td>
+			<td>{{data['ip']}}</td>
+			<td>{{data['status']}}</td>
+			<td>{{data['times']}}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+</body>

@@ -1,0 +1,319 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<link rel="stylesheet" href="/static/jquery-ui.css">
+<script src="/static/js/laydate.js"></script>
+
+
+
+{% extends "layout.html" %}
+{% block title %}
+    资产信息
+{% endblock %}
+{% block list%}
+            <li ><a href="/data">日志</a></li>
+            <li ><a href="/userlist">用户</a></li>
+            <li ><a href="/mes_data">资产管理</a></li>
+{%endblock%}
+{% block body %}
+<!-- Large modal -->
+<button id='addModalBtn' type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#adduserModal">
+    添加主机
+</button>
+<table class='table table-bordered table-striped'>
+    <tr colspan="2" style="background-color:#99bbbb;"> 
+                <td>编号</td>
+                <td>主机</td>
+                <td>内存</td>
+                <td>CPU</td>
+                <td>邮箱 </td>
+                <td>过期时间</td>
+                <td>备注</td>
+                <td>操作</td>
+   </tr>
+<tbody id='tbody-content'></tbody>
+</table>
+</div>
+
+{%endblock%}
+
+{%block haha%}
+
+<!-- Modal -->
+<div class="modal fade" id="adduserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加主机</h4>
+      </div>
+      <div class="modal-body">
+        
+<form action='/add_mesdata' id='addformdata' method='post'>
+    <div class="form-group" >
+        <label for="Hostinfo">主机名称</label>
+        <input type="text" class="form-control" name='hostinfo' id="Hostinfo" placeholder="Host Info">
+    </div>
+<!--
+    <div class="form-group">
+        <label for="Memsize">内存大小</label>
+        <input type="text" class="form-control" name='memsize' id="Memsize" placeholder="Memory size">
+    </div>  -->
+    <div class="form-group">
+            <label for="Memsize">内存大小 : </label>
+            <input type="text" style="border:0; color:#f6931f; "  name='memsize' id="Memsize" >
+            <p>
+            <div id="slider1"></div>
+            </p>
+    </div>
+
+    <div class="form-group">
+        <label for="cpunum">CPU核数</label>
+        <input type="text" class="form-control" name='cpunum' id="cpunum" placeholder="CPU size">
+    </div>
+
+    <div class="form-group">
+      <label for="dataago">过期时间</label>
+<!--        <div class="form-control inline laydate-icon" name='dataago' id="dataago"></div>-->
+      <input type="text" class="form-control inline laydate-icon " name='dataago'  id="dataago" placeholder="xxxx-xx-xx">
+    </div>
+
+    <div class="form-group">
+    <label for="exampleInputEmail1">邮件地址</label>
+    <input type="email" class="form-control"  name='email' id="exampleInputEmail1" placeholder="Email">
+  </div>
+
+    <div class="form-group">
+        <label for="textinput">备注</label>
+        <input type="text" class="form-control" name='textinput'  id="textinput" placeholder="Text input">
+    </div>
+<!-- <input type='submit' id='addsubmit' value='adduser'> -->
+</form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="updateuserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">编辑主机</h4>
+      </div>
+      <div class="modal-body">
+        
+<form action='/update_mesdata' id='updateform' method='post'>
+
+    <div class="form-group" >
+        <label for="Hostinfo">主机名称</label>
+        <input type="text" class="form-control" name='hostinfo' id="Hostinfo" >
+    </div>
+
+ <!--   <div class="form-group">
+        <label for="Memsize">内存大小</label>
+        <input type="text" class="form-control" name='memsize' id="Memsize" >
+    </div>  -->
+
+    <div class="form-group">
+            <label for="Memsize1">内存大小 : </label>
+            <input type="text" style="border:0; color:#f6931f; "  name='memsize' id="Memsize1" >
+            <p>
+            <div id="slider2"></div>
+            </p>
+    </div>
+    <div class="form-group">
+        <label for="cpunum">CPU核数</label>
+        <input type="text" class="form-control" name='cpunum' id="cpunum" >
+    </div>
+
+    <div class="form-group">
+        <label for="dataago">过期时间</label>
+        <input type="text" class="form-control inline laydate-icon" name='dataago'  id="dataago1">
+    </div>
+
+    <div class="form-group">
+    <label for="exampleInputEmail1">邮件地址</label>
+    <input type="email" class="form-control"  name='email' id="exampleInputEmail1" >
+  </div>
+
+    <div class="form-group">
+        <label for="textinput">备注</label>
+        <input type="text" class="form-control" name='textinput'  id="textinput" >
+    </div>
+
+
+<!-- <input type='submit' id='addsubmit' value='adduser'> -->
+</form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">编辑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}
+
+
+{% block js %}
+    <script src="/static/jquery.js"></script>
+    <script src="/static/bootstrap.js"></script>
+    <script src="/static/sweetalert.min.js"></script>
+    <script src="/static/jquery-ui.js"></script>
+<script>
+
+$("#slider1").slider({
+        animate: "show",
+        max: 32,
+        min: 2,
+        slide: function(event, ui){
+            var val = ui.value
+            $('#Memsize').val(ui.value+'G')
+        }
+    })
+
+$("#slider2").slider({
+        animate: "show",
+        max: 32,
+        min: 2,
+        slide: function(event, ui){
+            var val = ui.value
+            $('#Memsize1').val(ui.value+'G')
+        }
+    })
+</script>
+
+<script>
+
+!function(){
+    laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+    laydate({elem: '#demo'});//绑定元素
+}();
+
+laydate({
+    elem: '#dataago',
+    min: laydate.now(1), //-1代表昨天，-2代表前天，以此类推
+    max: laydate.now(+10000) //+1代表明天，+2代表后天，以此类推
+});
+
+laydate({
+    elem: '#dataago1',
+    min: laydate.now(1), //-1代表昨天，-2代表前天，以此类推
+    max: laydate.now(+10000) //+1代表明天，+2代表后天，以此类推
+});
+
+$(document).on('click','.delete-btn',function(){
+    var id = $(this).attr('data-id')
+  swal({ 
+      title: "Are you sure to delete user?",
+      //text: "Are you delete",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      closeOnConfirm: false,
+      html: false
+    }, function(){   
+
+           // $.get('/deluser?id='+id,function(res){
+            $.post('/del_mesdata',{id:id},function(res){
+                if (res=='ok'){
+                    swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    getlist()
+            }else{
+                swal("Cancelled", "Your imaginary file is safe.", "error");
+        }       
+        })
+       }) 
+    })
+
+    $('#adduserModal').find('.btn-primary').on('click',function(){
+     //   var url = '/add_mesdata?'+$('#addformdata').serialize()
+        var hostinfo1 = $('#addformdata').find('[name="hostinfo"]').val()
+        var memsize1 = $('#addformdata').find('[name="memsize"]').val()
+        var cpunum1 = $('#addformdata').find('[name="cpunum"]').val()
+        var email1 = $('#addformdata').find('[name="email"]').val()
+        var dataago1 = $('#addformdata').find('[name="dataago"]').val()
+        var textinput1 = $('#addformdata').find('[name="textinput"]').val()
+        $.post('/add_mesdata',{hostinfo:hostinfo1,memsize:memsize1,cpunum:cpunum1,email:email1,dataago:dataago1,textinput:textinput1},function(res){
+            if (res=='ok'){
+                $('#adduserModal').modal('hide')
+                swal('success','add success!','success')
+                $('#addformdata')[0].reset()
+                getlist()
+            }else{
+                swal('error','error happend','error')  
+            }
+        })
+        return false
+    })
+
+$('#updateuserModal').find('.btn-primary').on('click',function(){
+        var userid = $('#updateuserModal').attr('data-userid')
+ //  var pwd = $('#updateform').find('[name="pwd"]').val()
+        var hostinfo1 = $('#updateform').find('[name="hostinfo"]').val()
+        var memsize1 = $('#updateform').find('[name="memsize"]').val()
+        var cpunum1 = $('#updateform').find('[name="cpunum"]').val()
+        var email1 = $('#updateform').find('[name="email"]').val()
+        var dataago1 = $('#updateform').find('[name="dataago"]').val()
+        var textinput1 = $('#updateform').find('[name="textinput"]').val()
+        $.post('/update_mesdata',{hostinfo:hostinfo1,memsize:memsize1,cpunum:cpunum1,email:email1,dataago:dataago1,textinput:textinput1,id:userid},function(res){
+        if(res=='ok'){
+            $('#updateuserModal').modal('hide')
+            swal('success','Update success!','success')
+            getlist()
+        }else{
+            swal('error','error happened','error')
+        }
+  })
+})
+
+
+ $(document).on('click','.update1-btn',function(){
+//        var pwd = $(this).data('pwd')  
+        var userid = $(this).data('id')
+        var hostinfo  = $(this).data('hostinfo')
+        var meminfo  = $(this).data('memsize')
+        var cpuinfo  = $(this).data('cpunum')
+        var emailinfo  = $(this).data('email')
+        var dateinfo  = $(this).data('dataago')
+        var textinfo  = $(this).data('textinput')
+        $('#updateuserModal').attr('data-userid',userid).modal('show')
+        $('#updateform').find('[name="hostinfo"]').val(hostinfo)
+        $('#updateform').find('[name="memsize"]').val(meminfo)
+        $('#updateform').find('[name="cpunum"]').val(cpuinfo)
+        $('#updateform').find('[name="dataago"]').val(dateinfo)
+        $('#updateform').find('[name="email"]').val(emailinfo)
+        $('#updateform').find('[name="textinput"]').val(textinfo)
+    })
+//function dakai(){
+//    document.getElementById('light').style.display='block';
+//}
+
+ function getlist(){
+    var res = ''
+    $.getJSON('/getmesdata',function(res){
+        $.each(res,function(index,value){
+        res+= '<tr><td>'+(index+1)+'</td>'
+        res+= '<td>'+value[1]+'</td>'
+        res+= '<td>'+value[2]+'</td>'
+        res+= '<td>'+value[3]+'</td>'
+        res+= '<td>'+value[4]+'</td>'
+        res+= '<td>'+value[5]+'</td>'
+        res+= '<td>'+value[6]+'</td>'
+        res+= '<td><button data-id="'+value[0]+'" class="btn btn-danger btn-xs delete-btn">删除</button> ' 
+        res+= '<button data-hostinfo="'+value[1]+'" data-memsize="'+value[2]+'" data-cpunum="'+value[3]+'" data-email="'+value[4]+'" data-dataago="'+value[5]+'" data-textinput="'+value[6]+'" data-id="'+value[0]+'" class="btn btn-danger btn-xs update1-btn">更新</button></td></tr>'
+    })
+        $('#tbody-content').html(res)
+    })
+    }
+    getlist()
+</script>
+{% endblock %}
